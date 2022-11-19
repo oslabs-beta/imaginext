@@ -1,0 +1,25 @@
+{
+  "pages": [
+    {
+      "name": "_app.tsx",
+      "path": "/Users/richter/Downloads/playground/my-app/pages/_app.tsx",
+      "folder": []
+    },
+    {
+      "name": "index.tsx",
+      "path": "/Users/richter/Downloads/playground/my-app/pages/index.tsx",
+      "folder": []
+    },
+    {
+      "name": "api",
+      "path": "/Users/richter/Downloads/playground/my-app/pages/api",
+      "folder": [
+        {
+          "name": "hello.ts",
+          "path": "/Users/richter/Downloads/playground/my-app/pages/api/hello.ts",
+          "folder": []
+        }
+      ]
+    }
+  ]
+}
