@@ -1,5 +1,5 @@
 export default function Hello() {
     return (
-        <h1>hello</h1>
+        <h1>Demo!</h1>
     )
 }
