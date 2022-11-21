@@ -3,6 +3,17 @@ import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import Tree from 'react-d3-tree'
 
+/**
+ * react-3d-tree is looking for the data entry in the following format: 
+ * 
+ * 
+ interface RawNodeDatum {
+  name: string;
+  attributes?: Record<string, string | number | boolean>;
+  children?: RawNodeDatum[];
+}
+ */
+
 export default function Home() {
   const test = {
     name: 'Pages',
@@ -37,7 +48,6 @@ export default function Home() {
       },
     ]
   }
-
   return (
     <div id='treeWrapper' style={{ width: '50em', height: '20em' }}>
       <Tree data = {test} />
