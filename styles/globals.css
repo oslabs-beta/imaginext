@@ -16,20 +16,21 @@ a {
 }
 
 .node__root>circle {
-  fill: red;
+  fill: blue;
+  r:20
 }
 
 .node__branch>circle {
   fill: yellow;
+  r:15;
 }
 
 .node__leaf>circle {
   fill: green;
   /* Let's also make the radius of leaf nodes larger */
-  r:20;
+  r:10;
 
 }
-
 
 @media (prefers-color-scheme: dark) {
   html {
