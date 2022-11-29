@@ -2,21 +2,17 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { parse } from '@typescript-eslint/typescript-estree';
 import path from 'path';
 import fs from 'fs';
-
+import TestParse from '../../lib/parser'
 
 type Data = {
   data: object
 }
 
-const sourcePath = path.join(process.cwd(), "/pages/api/hello.ts")
-const source = fs.readFileSync(sourcePath, "utf8")
+const sourcePath = '/Users/bapplemac16/Documents/codingProjectsPractice/nextJS/commerce/site/pages/404.tsx'
+// // const sourcePath = path.join(process.cwd(), "/pages/api/hello.ts")
+// console.log('sourcePath: ', sourcePath)
 
-const ast = parse(source, {
-  jsx: true,
-});
-
-console.log(ast)
-
+const ast = TestParse(sourcePath)
 
 export default function handler(
   req: NextApiRequest,

@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
-const path = require('path');
-const fs = require('fs');
+import path from 'path';
+import fs from 'fs';
 
 // todo: add support to input a link or drag and drop.
 // process.cwd -> goes to the root of this project
@@ -26,7 +26,7 @@ export default function handler(
   function traverseDir(dir:string) {
     const arr:object[] = [];
     fs.readdirSync(dir).forEach((file : string) => {
-      let fullPath = path.join(dir, file);
+      const fullPath = path.join(dir, file);
       const obj:newObj = {
         name: file,
         path: fullPath,
@@ -37,6 +37,7 @@ export default function handler(
       } 
       arr.push(obj)
     });
+    console.log(arr)
     return arr
   }
 
