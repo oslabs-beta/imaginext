@@ -20,11 +20,14 @@ import { inputData, child } from '../public/types'
 export default function Home() {
   const test : inputData = {
     name: 'Pages',
+    attributes: {
+      path: "pages",
+    },
     children: [
       {
         name: "_app.tsx",
         attributes: {
-            path: "pages/_app.tsx",
+          path: "pages/_app.tsx",
         },
         children: undefined
       },
@@ -52,10 +55,31 @@ export default function Home() {
       },
     ]
   }
+  
+  const separateData = (obj: inputData) => {
+    setAttribute({obj.name: obj.attributes})
+    obj.attributes = undefined;
+    
+    if(obj.children === undefined) return
+
+    obj.children.forEach((v) => {separateData(v)});
+
+
+
+    // obj.children = obj.children.map((val, index) => {
+    //   return {
+    //     ...val,
+    //     attributes: undefined
+    //   }
+    // })
+  }
+
+
   const shouldRecenterTreeRef = useRef(true);
   const [treeTranslate, setTreeTranslate] = useState({ x: 0, y: 0 });
   const treeContainerRef = useRef(null);
   const [treeData, setTreeData] = useState(<h6>Please Upload A Project</h6>)
+  const [attribute, setAttribute] = useState({'pages': attribute:{path:"pages"}})
 
   useEffect(() => {
     if (treeContainerRef.current && shouldRecenterTreeRef.current) {
@@ -92,6 +116,8 @@ export default function Home() {
     //   },
     //   body:JSON.stringify(value),
     // })
+
+    separateData(test);
 
     setTreeData(
       <Tree
