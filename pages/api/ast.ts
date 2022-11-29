@@ -1,18 +1,18 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { parse } from '@typescript-eslint/typescript-estree';
 import path from 'path';
-import fs from 'fs';
-import TestParse from '../../lib/parser'
+import runParser from '../../lib/parser'
 
+// this endpoint is for testing only. import runParser and use function instead
 type Data = {
   data: object
 }
 
-const sourcePath = '/Users/bapplemac16/Documents/codingProjectsPractice/nextJS/commerce/site/pages/404.tsx'
-// // const sourcePath = path.join(process.cwd(), "/pages/api/hello.ts")
-// console.log('sourcePath: ', sourcePath)
+// hard-coded path for testing only
+const sourcePath = path.join(process.cwd(), "/pages/api/hello.ts")
+console.log('sourcePath: ', sourcePath)
 
-const ast = TestParse(sourcePath)
+const ast = runParser(sourcePath)
+
 
 export default function handler(
   req: NextApiRequest,
