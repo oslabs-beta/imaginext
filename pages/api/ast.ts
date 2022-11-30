@@ -1,21 +1,17 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { parse } from '@typescript-eslint/typescript-estree';
 import path from 'path';
-import fs from 'fs';
+import runParser from '../../lib/parser'
 
-
+// this endpoint is for testing only. import runParser and use function instead
 type Data = {
   data: object
 }
 
+// hard-coded path for testing only
 const sourcePath = path.join(process.cwd(), "/pages/api/hello.ts")
-const source = fs.readFileSync(sourcePath, "utf8")
+console.log('sourcePath: ', sourcePath)
 
-const ast = parse(source, {
-  jsx: true,
-});
-
-console.log(ast)
+const ast = runParser(sourcePath)
 
 
 export default function handler(
