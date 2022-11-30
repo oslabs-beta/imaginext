@@ -9,13 +9,14 @@ const currentProjectPath = path.join(process.cwd(), 'pages');
 const otherPath = '/Users/richter/Downloads/playground/my-app/pages'; // put in some other path to check
 
 type Data = {
-  pages: object[]
+  name: string
+  children: object[]
 }
 
 interface newObj {
   name: string
-  path: string
-  folder: object[]
+  attributes: {}
+  children: undefined|object[]
 }
 
 export default function handler(
@@ -29,18 +30,18 @@ export default function handler(
       const fullPath = path.join(dir, file);
       const obj:newObj = {
         name: file,
-        path: fullPath,
-        folder: []
+        attributes: {path: fullPath},
+        children: []
       }
       if (fs.lstatSync(fullPath).isDirectory()) {
-        obj.folder = traverseDir(fullPath);
+        obj.children = traverseDir(fullPath);
       } 
       arr.push(obj)
     });
-    console.log(arr)
+    console.log('test',arr)
     return arr
   }
 
   // change the argument in traverseDir
-  res.status(200).json({ pages: traverseDir(currentProjectPath)})
+  res.status(200).json({ name: 'Pages', children: traverseDir(currentProjectPath)})
 }
