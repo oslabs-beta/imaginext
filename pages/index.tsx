@@ -3,7 +3,8 @@ import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import Tree from 'react-d3-tree'
 import { useState, useRef, useEffect } from 'react'
-import { inputData, child } from '../public/types'
+import { inputData, child, attribute, attributes } from '../public/types'
+import InfoPanel from '../components/infoPanel'
 
 /**
  * react-3d-tree is looking for the data entry in the following format: 
@@ -28,6 +29,8 @@ export default function Home() {
         name: "_app.tsx",
         attributes: {
           path: "pages/_app.tsx",
+          dataRenderMethod: 'SSR',
+          props:'haha '
         },
         children: undefined
       },
@@ -56,22 +59,21 @@ export default function Home() {
     ]
   }
   
+  const attributes : attributes = {
+    pages: {
+      path: "HELLO", 
+      dataRenderMethod: 'SSR'
+    }
+  };
+
   const separateData = (obj: inputData) => {
-    setAttribute({obj.name: obj.attributes})
+    attributes[obj.name] = obj.attributes;
+    console.log(attributes);
     obj.attributes = undefined;
     
     if(obj.children === undefined) return
 
     obj.children.forEach((v) => {separateData(v)});
-
-
-
-    // obj.children = obj.children.map((val, index) => {
-    //   return {
-    //     ...val,
-    //     attributes: undefined
-    //   }
-    // })
   }
 
 
@@ -135,13 +137,19 @@ export default function Home() {
 
 
   return (
-    
-    <div ref={treeContainerRef} style={{ height: '100vh' }}>
+    <>
+      <div ref={treeContainerRef} style={{ height: '90vh' }}>
+        <div className="submit">
+          <input id="submitInput"></input>
+          <button onClick={handleSubmit}>Submit</button>
+        </div>
+        <div className="info-panel">
+          <InfoPanel attribute = {attributes.pages}/>
+        </div>
 
-      <input id="submitInput"></input>
-      <button onClick={handleSubmit}>Submit</button>
-
-      {treeData}
-    </div>
+        {treeData}
+      </div>
+      
+    </>
   )
 }
