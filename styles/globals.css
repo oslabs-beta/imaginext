@@ -15,6 +15,10 @@ a {
   box-sizing: border-box;
 }
 
+.initial-message {
+  height:100vh;
+}
+
 .node__root>circle {
   fill: blue;
   r:20
@@ -37,7 +41,14 @@ a {
     color-scheme: dark;
   }
   body {
-    color: white;
+    color: #4e4e4e;
     background: black;
+  }
+
+  .rd3t-link {
+    stroke: white !important;
+  }
+  .rd3t-label__title {
+    fill: white;
   }
 }

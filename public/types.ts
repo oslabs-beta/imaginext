@@ -1,8 +1,6 @@
 export interface inputData {
   name: string;
-  attributes: {
-    path: string
-  };
+  attributes?: { path: string };
   children: undefined | child[];
 }
 

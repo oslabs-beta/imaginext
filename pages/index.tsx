@@ -78,8 +78,7 @@ export default function Home() {
   const shouldRecenterTreeRef = useRef(true);
   const [treeTranslate, setTreeTranslate] = useState({ x: 0, y: 0 });
   const treeContainerRef = useRef(null);
-  const [treeData, setTreeData] = useState(<h6>Please Upload A Project</h6>)
-  const [attribute, setAttribute] = useState({'pages': attribute:{path:"pages"}})
+  const [treeData, setTreeData] = useState(<div className="initial-message">Please Upload A Project</div>)
 
   useEffect(() => {
     if (treeContainerRef.current && shouldRecenterTreeRef.current) {
