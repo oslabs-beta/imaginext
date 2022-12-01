@@ -3,7 +3,8 @@ import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import Tree from 'react-d3-tree'
 import { useState, useRef, useEffect } from 'react'
-import { inputData, child } from '../public/types'
+import { inputData, child, attribute, attributes } from '../public/types'
+import InfoPanel from '../components/infoPanel'
 
 /**
  * react-3d-tree is looking for the data entry in the following format: 
@@ -20,11 +21,16 @@ import { inputData, child } from '../public/types'
 export default function Home() {
   const test : inputData = {
     name: 'Pages',
+    attributes: {
+      path: "pages",
+    },
     children: [
       {
         name: "_app.tsx",
         attributes: {
-            path: "pages/_app.tsx",
+          path: "pages/_app.tsx",
+          dataRenderMethod: 'SSR',
+          props:'haha '
         },
         children: undefined
       },
@@ -52,10 +58,26 @@ export default function Home() {
       },
     ]
   }
+  
+  const attributes : attributes = {
+    pages: {
+      path: "", 
+      dataRenderMethod: ''
+    }
+  };
+
+
+
   const shouldRecenterTreeRef = useRef(true);
   const [treeTranslate, setTreeTranslate] = useState({ x: 0, y: 0 });
   const treeContainerRef = useRef(null);
-  const [treeData, setTreeData] = useState(<h6>Please Upload A Project</h6>)
+  const [treeData, setTreeData] = useState(<div className="initial-message">Please Upload A Project</div>)
+  const [currentAttribute, setCurrentAttribute] = useState({
+    pages: {
+      path: "", 
+      dataRenderMethod: ''
+    }
+  });
 
   useEffect(() => {
     if (treeContainerRef.current && shouldRecenterTreeRef.current) {
@@ -69,6 +91,8 @@ export default function Home() {
     }
   });
 
+
+
   const getDynamicPathClass = ({ source, target }, orientation) => {
     if (!target.children) {
       // Target node has no children -> this link leads to a leaf node.
@@ -78,6 +102,16 @@ export default function Home() {
     // Style it as a link connecting two branch nodes by default.
     return 'link__to-branch';
   };
+
+  const separateData = (obj: inputData) => {
+    attributes[obj.name] = obj.attributes;
+    console.log(attributes);
+    obj.attributes = undefined;
+    
+    if(obj.children === undefined) return
+
+    obj.children.forEach((v) => {separateData(v)});
+  }
    
   const handleSubmit = () => {
     const input = document.getElementById("submitInput");
@@ -93,6 +127,7 @@ export default function Home() {
     //   body:JSON.stringify(value),
     // })
 
+    separateData(test);
     setTreeData(
       <Tree
         data={test}
@@ -106,17 +141,44 @@ export default function Home() {
         pathClassFunc={getDynamicPathClass}
       />
     );
+
+    const leafNodeArr = document.getElementsByClassName("rd3t-leaf-node");
+    const nodeObj = document.getElementsByClassName("rd3t-node");
+    console.log(nodeObj);
+    console.log(nodeObj.length);
+    
+    for (let key in nodeObj) {
+      console.log(nodeObj);
+      console.log("key", key);
+      console.log("nodeObj[key]", nodeObj[key]);
+      console.log("id", nodeObj[key].id);
+      console.log("Keys", Object.keys(nodeObj));
+      // nodeObj[key].addEventListener("mouseover", (e:Event) => {
+      //   const newObj: attributes = {};
+      //   const name: string = e.target.getElementsByTagName("text")[0].innerHTML;
+
+      //   newObj[name] = attributes[name]
+      //   setCurrentAttribute(newObj);
+      //   console.log("name", name);
+      // });
+    }
   }
 
 
   return (
-    
-    <div ref={treeContainerRef} style={{ height: '100vh' }}>
+    <>
+      <div ref={treeContainerRef} style={{ height: '100vh', overflow: "hidden" }}>
+        <div className="submit">
+          <input id="submitInput"></input>
+          <button onClick={handleSubmit}>Submit</button>
+        </div>
+        <div className="info-panel">
+          <InfoPanel att = {attributes.pages}/>
+        </div>
 
-      <input id="submitInput"></input>
-      <button onClick={handleSubmit}>Submit</button>
-
-      {treeData}
-    </div>
+        {treeData}
+      </div>
+      
+    </>
   )
 }
