@@ -20,9 +20,9 @@ export type header = {
     
 }
 export type attribute = {
-  path?: string
-  dataRenderMethod?: string
-  props?:string
+  path: string
+  dataRenderMethod: string
+  props?: string
 }
 export type attributes = {
   [name: string]: attribute
