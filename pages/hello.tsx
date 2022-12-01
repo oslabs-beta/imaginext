@@ -1,14 +1,6 @@
 import { useState, useEffect } from 'react'
 
 export default function Hello() {
-<<<<<<< HEAD
-  return (
-    <h1>Demo!</h1>
-  )
-}
-
-// test
-=======
     const [data, setData] = useState(null)
 
     const testClick = () => {
@@ -26,9 +18,8 @@ export default function Hello() {
       console.log(data)
 
     return (
-        <div>
-            <button onClick={testClick}>Test</button>
-        </div>
+      <div>
+        <button onClick={testClick}>Test</button>
+      </div>
     )
 }
->>>>>>> cbeff8dc6c940a0ed9189943e2dae2835dee8fbe
