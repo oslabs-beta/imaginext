@@ -3,7 +3,8 @@ import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import Tree from 'react-d3-tree'
 import { useState, useRef, useEffect } from 'react'
-import { inputData, child } from '../public/types'
+import { inputData, child, attribute, attributes } from '../public/types'
+import InfoPanel from '../components/infoPanel'
 
 /**
  * react-3d-tree is looking for the data entry in the following format: 
@@ -20,11 +21,16 @@ import { inputData, child } from '../public/types'
 export default function Home() {
   const test : inputData = {
     name: 'Pages',
+    attributes: {
+      path: "pages",
+    },
     children: [
       {
         name: "_app.tsx",
         attributes: {
-            path: "pages/_app.tsx",
+          path: "pages/_app.tsx",
+          dataRenderMethod: 'SSR',
+          props:'haha '
         },
         children: undefined
       },
@@ -52,6 +58,25 @@ export default function Home() {
       },
     ]
   }
+  
+  const attributes : attributes = {
+    pages: {
+      path: "HELLO", 
+      dataRenderMethod: 'SSR'
+    }
+  };
+
+  const separateData = (obj: inputData) => {
+    attributes[obj.name] = obj.attributes;
+    console.log(attributes);
+    obj.attributes = undefined;
+    
+    if(obj.children === undefined) return
+
+    obj.children.forEach((v) => {separateData(v)});
+  }
+
+
   const shouldRecenterTreeRef = useRef(true);
   const [treeTranslate, setTreeTranslate] = useState({ x: 0, y: 0 });
   const treeContainerRef = useRef(null);
@@ -93,6 +118,8 @@ export default function Home() {
     //   body:JSON.stringify(value),
     // })
 
+    separateData(test);
+
     setTreeData(
       <Tree
         data={test}
@@ -110,13 +137,19 @@ export default function Home() {
 
 
   return (
-    
-    <div ref={treeContainerRef} style={{ height: '100vh' }}>
+    <>
+      <div ref={treeContainerRef} style={{ height: '90vh' }}>
+        <div className="submit">
+          <input id="submitInput"></input>
+          <button onClick={handleSubmit}>Submit</button>
+        </div>
+        <div className="info-panel">
+          <InfoPanel attribute = {attributes.pages}/>
+        </div>
 
-      <input id="submitInput"></input>
-      <button onClick={handleSubmit}>Submit</button>
-
-      {treeData}
-    </div>
+        {treeData}
+      </div>
+      
+    </>
   )
 }
