@@ -1,10 +1,13 @@
-import {attribute} from '../public/types'
+import {attribute, attributes} from '../public/types'
 
-export default function InfoPanel (att: attribute){
-    const path: string = att.path;
-    const dataRenderMethod: string = att.dataRenderMethod;
+export default function InfoPanel (props: {att:attribute}) {
+    const path: string = props.att.path;
+    const dataRenderMethod: string = props.att.dataRenderMethod;
 
   return (
-    <div>Hello I'm {path}</div>
+    <>
+      <div>Path: {path}</div>
+      <div>Data Render Method: {dataRenderMethod}</div>
+    </>
   )
 }

@@ -41,7 +41,12 @@ export default function handler(
     console.log('test',arr)
     return arr
   }
+  if (req.method === 'POST') {
+    const path = req.body.path;
+    res.status(200).json({ name: 'Pages', children: traverseDir(path)})
+  }else {
+    // change the argument in traverseDir
+    res.status(200).json({ name: 'Pages', children: traverseDir(currentProjectPath)})
+  }
 
-  // change the argument in traverseDir
-  res.status(200).json({ name: 'Pages', children: traverseDir(currentProjectPath)})
 }
