@@ -38,7 +38,7 @@ export default function handler(
           path: fullPath,
           data: {}
         },
-        children: []
+        children: undefined
       }
       if (fs.lstatSync(fullPath).isDirectory()) {
         obj.children = traverseDir(fullPath);

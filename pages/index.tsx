@@ -25,58 +25,13 @@ const attributes : attributes = {
 };
 
 export default function Home() {
-  const test : inputData = {
-    name: 'Pages',
-    attributes: {
-      path: "pages",
-      dataRenderMethod: 'SSR',
-      props:'haha '
-    },
-    children: [
-      {
-        name: "_app.tsx",
-        attributes: {
-          path: "pages/_app.tsx",
-          dataRenderMethod: 'SSR',
-          props:'haha '
-        },
-      },
-       {
-        name: "index.tsx",
-        attributes: {
-          path: "pages/index.tsx",
-          dataRenderMethod: 'SSR',
-          props:'haha '
-        },
-        children: undefined
-      },
-      {
-        name: "api",
-        attributes: {
-          path: "pages/api",
-          dataRenderMethod: 'SSR',
-          props:'haha '
-        },
-        children: [
-          {
-            name: "hello.ts",
-            attributes: {
-              path:"pages/api/hello.ts",
-              dataRenderMethod: 'SSR',
-              props:'haha '
-            },
-            children: undefined
-          }
-        ]
-      },
-    ]
-  }
+  const inputPath = useRef<null | HTMLInputElement>(null);
 
   const shouldRecenterTreeRef = useRef(true);
   const [treeTranslate, setTreeTranslate] = useState({ x: 0, y: 0 });
   const treeContainerRef = useRef(null);
   
-  const [treeData, setTreeData] = useState(<div className="initial-message">Please Upload A Project</div>)
+  const [treeData, setTreeData] = useState(<div className="initial-message">Please Upload A Project</div>);
   const [currentAttribute, setCurrentAttribute] = useState({
     path: "", 
     dataRenderMethod: '',
@@ -148,37 +103,48 @@ export default function Home() {
 
     obj.children.forEach((v) => {separateData(v)});
   }
-   
-  const handleSubmit = () => {
-    const input: HTMLElement | null = document.getElementById("submitInput");
-    let value: string;
-    input != null ? value = input.value : value = ""
-    console.log(value);
 
-    separateData(test);
-    setTreeData(
-      <Tree
-        data={test}
-        collapsible={true}
-        pathFunc="diagonal"
-        translate={treeTranslate}
-        orientation="vertical"
-        rootNodeClassName="node__root"
-        branchNodeClassName="node__branch"
-        leafNodeClassName="node__leaf"
-        pathClassFunc={getDynamicPathClass}
-      />
-    );
+  const onSubmit = (e: React.FormEvent) => {
+      const path: string = inputPath.current.value;
+      e.preventDefault();
+      //post 
+      fetch('http://localhost:3000/api/data', {
+          method: 'POST',
+          body: JSON.stringify({path: path}),
+          headers:{'Content-Type': 'application/json'}
+      })
+      .then((response) => response.json())
+      .then((json) => {
+        console.log(json)
+        separateData(json);
+        setTreeData(
+          <Tree
+            data={json}
+            collapsible={true}
+            pathFunc="diagonal"
+            translate={treeTranslate}
+            orientation="vertical"
+            rootNodeClassName="node__root"
+            branchNodeClassName="node__branch"
+            leafNodeClassName="node__leaf"
+            pathClassFunc={getDynamicPathClass}
+          />
+        );
+      })
+      .catch((err) => console.log(err))
   }
+  
 
 
   return (
     <>
       <div ref={treeContainerRef} style={{ height: '100vh', overflow: "hidden" }}>
-        <div className="submit">
-          <input id="submitInput"></input>
-          <button onClick={handleSubmit}>Submit</button>
-        </div>
+        <h3>locate the PAGES folder of your next.js project in vscode</h3>
+        <h3>right click it, COPY PATH and paste below</h3>
+        <form onSubmit={onSubmit}>
+          <input ref={inputPath}></input>
+          <button type='submit'>Submit</button>
+        </form>
         <div className="info-panel">
           <InfoPanel att = {currentAttribute}/>
         </div>
