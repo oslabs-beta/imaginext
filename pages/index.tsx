@@ -17,6 +17,12 @@ import InfoPanel from '../components/infoPanel'
 }
  */
 
+const attributes : attributes = {
+  pages: {
+    path: "test", 
+    dataRenderMethod: 'test'
+  }
+};
 
 export default function Home() {
   const test : inputData = {
@@ -59,24 +65,17 @@ export default function Home() {
     ]
   }
   
-  const attributes : attributes = {
-    pages: {
-      path: "", 
-      dataRenderMethod: ''
-    }
-  };
 
 
 
   const shouldRecenterTreeRef = useRef(true);
   const [treeTranslate, setTreeTranslate] = useState({ x: 0, y: 0 });
   const treeContainerRef = useRef(null);
+  
   const [treeData, setTreeData] = useState(<div className="initial-message">Please Upload A Project</div>)
   const [currentAttribute, setCurrentAttribute] = useState({
-    pages: {
-      path: "", 
-      dataRenderMethod: ''
-    }
+    path: "", 
+    dataRenderMethod: '',
   });
 
   useEffect(() => {
@@ -89,6 +88,34 @@ export default function Home() {
         y: dimensions.height / 2,
       });
     }
+  });
+
+  useEffect(() => {
+    const leafNodeArr = document.getElementsByClassName("rd3t-leaf-node");
+    const nodeObj = document.getElementsByClassName("rd3t-node");
+    const arrayCallback = (v: HTMLElement) => {
+      v.addEventListener("mouseover", (e:Event) => {
+        let newObj: attribute = {};
+        let name: string = "";
+
+        if(e.target.tagName === "text") {
+          name = e.target.innerHTML.toLowerCase();
+        } else if(e.target.classList === "rd3t-label") {
+          name = e.target.getElementsByTagName("text")[0].innerHTML.toLowerCase();
+        } else if(e.target.tagName === "circle") {
+          name = e.target.parentElement.getElementsByClassName("rd3t-label")[0].getElementsByTagName("text")[0].innerHTML.toLowerCase();
+        }
+
+        console.log("name", name);
+        newObj = {...attributes[name]};
+        console.log("newObj", newObj);
+        console.log("attributes", attributes);
+        setCurrentAttribute(newObj);
+      });
+    }
+
+    Array.from(leafNodeArr).forEach(arrayCallback);
+    Array.from(nodeObj).forEach(arrayCallback);
   });
 
 
@@ -105,7 +132,7 @@ export default function Home() {
 
   const separateData = (obj: inputData) => {
     attributes[obj.name] = obj.attributes;
-    console.log(attributes);
+    console.log("separateData attributes", attributes);
     obj.attributes = undefined;
     
     if(obj.children === undefined) return
@@ -114,9 +141,9 @@ export default function Home() {
   }
    
   const handleSubmit = () => {
-    const input = document.getElementById("submitInput");
-    let value: string = input.value;
-    if(value === null) value = "";
+    const input: HTMLElement | null = document.getElementById("submitInput");
+    let value: string;
+    input != null ? value = input.value : value = ""
     console.log(value);
 
     // fetch('/data', {
@@ -141,27 +168,6 @@ export default function Home() {
         pathClassFunc={getDynamicPathClass}
       />
     );
-
-    const leafNodeArr = document.getElementsByClassName("rd3t-leaf-node");
-    const nodeObj = document.getElementsByClassName("rd3t-node");
-    console.log(nodeObj);
-    console.log(nodeObj.length);
-    
-    for (let key in nodeObj) {
-      console.log(nodeObj);
-      console.log("key", key);
-      console.log("nodeObj[key]", nodeObj[key]);
-      console.log("id", nodeObj[key].id);
-      console.log("Keys", Object.keys(nodeObj));
-      // nodeObj[key].addEventListener("mouseover", (e:Event) => {
-      //   const newObj: attributes = {};
-      //   const name: string = e.target.getElementsByTagName("text")[0].innerHTML;
-
-      //   newObj[name] = attributes[name]
-      //   setCurrentAttribute(newObj);
-      //   console.log("name", name);
-      // });
-    }
   }
 
 
@@ -173,7 +179,7 @@ export default function Home() {
           <button onClick={handleSubmit}>Submit</button>
         </div>
         <div className="info-panel">
-          <InfoPanel att = {attributes.pages}/>
+          <InfoPanel att = {currentAttribute}/>
         </div>
 
         {treeData}
