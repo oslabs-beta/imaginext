@@ -2,11 +2,12 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import path from 'path';
 import fs from 'fs';
+import runParser from '../../lib/parser';
 
 // todo: add support to input a link or drag and drop.
 // process.cwd -> goes to the root of this project
 const currentProjectPath = path.join(process.cwd(), 'pages');
-const otherPath = '/Users/richter/Downloads/playground/my-app/pages'; // put in some other path to check
+// const otherPath = '/Users/richter/Downloads/playground/my-app/pages'; // put in some other path to check
 
 type Data = {
   name: string
@@ -15,7 +16,10 @@ type Data = {
 
 interface newObj {
   name: string
-  attributes: {}
+  attributes: {
+    path: string,
+    data: Record<string, unknown>
+  }
   children: undefined|object[]
 }
 
@@ -30,12 +34,18 @@ export default function handler(
       const fullPath = path.join(dir, file);
       const obj:newObj = {
         name: file,
-        attributes: {path: fullPath},
+        attributes: {
+          path: fullPath,
+          data: {}
+        },
         children: []
       }
       if (fs.lstatSync(fullPath).isDirectory()) {
         obj.children = traverseDir(fullPath);
-      } 
+      } else {
+        obj.attributes.data = runParser(fullPath);
+      }
+
       arr.push(obj)
     });
     console.log('test',arr)

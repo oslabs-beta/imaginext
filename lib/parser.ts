@@ -9,6 +9,7 @@ type DataObj = {
 
 // TODO: add checks for client-side rendering and incremental static regeneration
 // TODO: currently only works with pages directory. add app directory
+// TODO: add checks if file is not js/jsx/ts/tsx file - if so, don't run parser. possibly add the check to data.ts instead?
 export function logAst(tree: object) {
   let renderMethod = '';
   walk(tree, {
@@ -16,12 +17,14 @@ export function logAst(tree: object) {
       if (node.type === 'ExportNamedDeclaration') {
         if (node.declaration.type === 'FunctionDeclaration') {
           if (node.declaration.id.name === 'getStaticProps') {
-            console.log('this is ExportNamedDeclaration node:', node)
+            console.log('ExportNamedDeclaration node:', node)
+            console.log('render method: SSG')
             renderMethod = 'SSG';
             this.skip();
           }
           else if (node.declaration.id.name === 'getServerSideProps') {
-            console.log('this is ExportNamedDeclaration node:', node)
+            console.log('ExportNamedDeclaration node:', node)
+            console.log('render method: SSR')
             renderMethod = 'SSR';
             this.skip();
           }
@@ -34,6 +37,7 @@ export function logAst(tree: object) {
 
   // assign default method of SSG
   if (renderMethod === '') {
+    console.log('assign default SSG')
     renderMethod = 'SSG'
   }
 
@@ -43,11 +47,14 @@ export function logAst(tree: object) {
 export function getRawTree(sourcePath: string){
   console.log('sourcePath: ', sourcePath)
   const source = fs.readFileSync(sourcePath, "utf8")
+  // console.log('source: ', source)
   
   const ast = parse(source, {
     jsx: true,
   });
 
+  // console.log('ast: ', ast)
+  // console.log('ast.body[1]: ', ast.body[1])
   return ast;
 }
 
