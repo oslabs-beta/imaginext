@@ -64,9 +64,6 @@ export default function Home() {
       },
     ]
   }
-  
-
-
 
   const shouldRecenterTreeRef = useRef(true);
   const [treeTranslate, setTreeTranslate] = useState({ x: 0, y: 0 });
@@ -133,6 +130,7 @@ export default function Home() {
   const separateData = (obj: inputData) => {
     attributes[obj.name] = obj.attributes;
     console.log("separateData attributes", attributes);
+
     obj.attributes = undefined;
     
     if(obj.children === undefined) return
@@ -168,6 +166,27 @@ export default function Home() {
         pathClassFunc={getDynamicPathClass}
       />
     );
+
+    const leafNodeArr = document.getElementsByClassName("rd3t-leaf-node");
+    const nodeObj = document.getElementsByClassName("rd3t-node");
+    console.log(nodeObj);
+    console.log(nodeObj.length);
+    
+    for (let key in nodeObj) {
+      console.log(nodeObj);
+      console.log("key", key);
+      console.log("nodeObj[key]", nodeObj[key]);
+      console.log("id", nodeObj[key].id);
+      console.log("Keys", Object.keys(nodeObj));
+      // nodeObj[key].addEventListener("mouseover", (e:Event) => {
+      //   const newObj: attributes = {};
+      //   const name: string = e.target.getElementsByTagName("text")[0].innerHTML;
+
+      //   newObj[name] = attributes[name]
+      //   setCurrentAttribute(newObj);
+      //   console.log("name", name);
+      // });
+    }
   }
 
 
@@ -180,6 +199,7 @@ export default function Home() {
         </div>
         <div className="info-panel">
           <InfoPanel att = {currentAttribute}/>
+
         </div>
 
         {treeData}
