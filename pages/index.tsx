@@ -25,45 +25,48 @@ const attributes : attributes = {
 };
 
 export default function Home() {
-  const test : inputData = {
-    name: 'Pages',
-    attributes: {
-      path: "pages",
-    },
-    children: [
-      {
-        name: "_app.tsx",
-        attributes: {
-          path: "pages/_app.tsx",
-          dataRenderMethod: 'SSR',
-          props:'haha '
-        },
-        children: undefined
-      },
-       {
-        name: "index.tsx",
-        attributes: {
-            path: "pages/index.tsx",
-        },
-        children: undefined
-      },
-           {
-        name: "api",
-        attributes: {
-            path: "pages/api",
-        },
-        children: [
-          {
-            name: "hello.ts",
-            attributes: {
-              path:"pages/api/hello.ts"
-            },
-            children: undefined
-          }
-        ]
-      },
-    ]
-  }
+  const [data, setData] = useState(null)
+  const inputPath = useRef<null | HTMLInputElement>(null);
+
+  // const test : inputData = {
+  //   name: 'Pages',
+  //   attributes: {
+  //     path: "pages",
+  //   },
+  //   children: [
+  //     {
+  //       name: "_app.tsx",
+  //       attributes: {
+  //         path: "pages/_app.tsx",
+  //         dataRenderMethod: 'SSR',
+  //         props:'haha '
+  //       },
+  //       children: undefined
+  //     },
+  //      {
+  //       name: "index.tsx",
+  //       attributes: {
+  //           path: "pages/index.tsx",
+  //       },
+  //       children: undefined
+  //     },
+  //          {
+  //       name: "api",
+  //       attributes: {
+  //           path: "pages/api",
+  //       },
+  //       children: [
+  //         {
+  //           name: "hello.ts",
+  //           attributes: {
+  //             path:"pages/api/hello.ts"
+  //           },
+  //           children: undefined
+  //         }
+  //       ]
+  //     },
+  //   ]
+  // }
 
   const shouldRecenterTreeRef = useRef(true);
   const [treeTranslate, setTreeTranslate] = useState({ x: 0, y: 0 });
@@ -138,65 +141,124 @@ export default function Home() {
     obj.children.forEach((v) => {separateData(v)});
   }
    
-  const handleSubmit = () => {
-    const input: HTMLElement | null = document.getElementById("submitInput");
-    let value: string;
-    input != null ? value = input.value : value = ""
-    console.log(value);
+  // const handleSubmit = () => {
+  //   const input: HTMLElement | null = document.getElementById("submitInput");
+  //   let value: string;
+  //   input != null ? value = input.value : value = ""
+  //   console.log(value);
 
-    // fetch('/data', {
-    //   method: 'POST',
-    //   header: {
-    //     "Content-Type": "application/json"
-    //   },
-    //   body:JSON.stringify(value),
-    // })
+  //   // fetch('/data', {
+  //   //   method: 'POST',
+  //   //   header: {
+  //   //     "Content-Type": "application/json"
+  //   //   },
+  //   //   body:JSON.stringify(value),
+  //   // })
 
-    separateData(test);
-    setTreeData(
-      <Tree
-        data={test}
-        collapsible={true}
-        pathFunc="diagonal"
-        translate={treeTranslate}
-        orientation="vertical"
-        rootNodeClassName="node__root"
-        branchNodeClassName="node__branch"
-        leafNodeClassName="node__leaf"
-        pathClassFunc={getDynamicPathClass}
-      />
-    );
+  //   separateData(test);
+  //   setTreeData(
+  //     <Tree
+  //       data={test}
+  //       collapsible={true}
+  //       pathFunc="diagonal"
+  //       translate={treeTranslate}
+  //       orientation="vertical"
+  //       rootNodeClassName="node__root"
+  //       branchNodeClassName="node__branch"
+  //       leafNodeClassName="node__leaf"
+  //       pathClassFunc={getDynamicPathClass}
+  //     />
+  //   );
 
-    const leafNodeArr = document.getElementsByClassName("rd3t-leaf-node");
-    const nodeObj = document.getElementsByClassName("rd3t-node");
-    console.log(nodeObj);
-    console.log(nodeObj.length);
+  //   const leafNodeArr = document.getElementsByClassName("rd3t-leaf-node");
+  //   const nodeObj = document.getElementsByClassName("rd3t-node");
+  //   console.log(nodeObj);
+  //   console.log(nodeObj.length);
     
-    for (let key in nodeObj) {
-      console.log(nodeObj);
-      console.log("key", key);
-      console.log("nodeObj[key]", nodeObj[key]);
-      console.log("id", nodeObj[key].id);
-      console.log("Keys", Object.keys(nodeObj));
-      // nodeObj[key].addEventListener("mouseover", (e:Event) => {
-      //   const newObj: attributes = {};
-      //   const name: string = e.target.getElementsByTagName("text")[0].innerHTML;
+  //   for (let key in nodeObj) {
+  //     console.log(nodeObj);
+  //     console.log("key", key);
+  //     console.log("nodeObj[key]", nodeObj[key]);
+  //     console.log("id", nodeObj[key].id);
+  //     console.log("Keys", Object.keys(nodeObj));
+  //     // nodeObj[key].addEventListener("mouseover", (e:Event) => {
+  //     //   const newObj: attributes = {};
+  //     //   const name: string = e.target.getElementsByTagName("text")[0].innerHTML;
 
-      //   newObj[name] = attributes[name]
-      //   setCurrentAttribute(newObj);
-      //   console.log("name", name);
-      // });
+  //     //   newObj[name] = attributes[name]
+  //     //   setCurrentAttribute(newObj);
+  //     //   console.log("name", name);
+  //     // });
+  //   }
+  // }
+
+    const onSubmit = (e: React.FormEvent) => {
+        const path = inputPath.current.value;
+        e.preventDefault();
+        //post 
+        fetch('http://localhost:3000/api/data', {
+            method: 'POST',
+            body: JSON.stringify({path: path}),
+            headers:{'Content-Type': 'application/json'}
+        })
+        .then((response) => response.json())
+        .then((json) => {
+          console.log(json)
+          separateData(json);
+          setTreeData(
+            <Tree
+              data={json}
+              collapsible={true}
+              pathFunc="diagonal"
+              translate={treeTranslate}
+              orientation="vertical"
+              rootNodeClassName="node__root"
+              branchNodeClassName="node__branch"
+              leafNodeClassName="node__leaf"
+              pathClassFunc={getDynamicPathClass}
+            />
+          );
+      
+          const leafNodeArr = document.getElementsByClassName("rd3t-leaf-node");
+          const nodeObj = document.getElementsByClassName("rd3t-node");
+          console.log(nodeObj);
+          console.log(nodeObj.length);
+          
+          for (let key in nodeObj) {
+            console.log(nodeObj);
+            console.log("key", key);
+            console.log("nodeObj[key]", nodeObj[key]);
+            console.log("id", nodeObj[key].id);
+            console.log("Keys", Object.keys(nodeObj));
+            // nodeObj[key].addEventListener("mouseover", (e:Event) => {
+            //   const newObj: attributes = {};
+            //   const name: string = e.target.getElementsByTagName("text")[0].innerHTML;
+      
+            //   newObj[name] = attributes[name]
+            //   setCurrentAttribute(newObj);
+            //   console.log("name", name);
+            // });
+          }
+        })
+        .catch((err) => console.log(err))
     }
-  }
+  
 
 
   return (
     <>
       <div ref={treeContainerRef} style={{ height: '100vh', overflow: "hidden" }}>
-        <div className="submit">
+        {/* <div className="submit">
           <input id="submitInput"></input>
           <button onClick={handleSubmit}>Submit</button>
-        </div>
+        </div> */}
+        
+        <h3>locate the PAGES folder of your next.js project in vscode</h3>
+        <h3>right click it, COPY PATH and paste below</h3>
+        <form onSubmit={onSubmit}>
+                <input ref={inputPath}></input>
+                <button type='submit'>Submit</button>
+            </form>
         <div className="info-panel">
           <InfoPanel att = {currentAttribute}/>
 
