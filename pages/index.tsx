@@ -40,7 +40,6 @@ export default function Home() {
           dataRenderMethod: 'SSR',
           props:'haha '
         },
-        children: undefined
       },
        {
         name: "index.tsx",

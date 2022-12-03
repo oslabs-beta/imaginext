@@ -1,13 +1,13 @@
 export interface inputData {
   name: string;
   attributes: attribute | undefined;
-  children: undefined | child[];
+  children?: child[];
 }
 
 export type child = {
   name: string;
   attributes: attribute;
-  children: undefined | child[];
+  children?: child[];
 }
 
 export type attribute = {
