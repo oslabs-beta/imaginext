@@ -39,10 +39,6 @@ a {
   border-radius: 5px;
 }
 
-.rd3t-leaf-node, .rd3t-node {
-  
-}
-
 .node__root>circle {
   fill: blue;
   r:20

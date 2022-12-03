@@ -1,24 +1,15 @@
 export interface inputData {
   name: string;
-  attributes?: attribute;
+  attributes: attribute | undefined;
   children: undefined | child[];
 }
 
 export type child = {
   name: string;
-  attributes: {
-    path: string
-  };
+  attributes: attribute;
   children: undefined | child[];
 }
-export type postProject = {
-  method: string
-  header:{},
-  body: string
-}
-export type header = {
-    
-}
+
 export type attribute = {
   path: string
   dataRenderMethod: string
@@ -26,4 +17,14 @@ export type attribute = {
 }
 export type attributes = {
   [name: string]: attribute
+}
+
+export type prop = {
+  type: string;
+  value: any;
+  parent: string;
+}
+
+export type props = {
+  [name: string]: prop
 }

@@ -29,6 +29,8 @@ export default function Home() {
     name: 'Pages',
     attributes: {
       path: "pages",
+      dataRenderMethod: 'SSR',
+      props:'haha '
     },
     children: [
       {
@@ -43,20 +45,26 @@ export default function Home() {
        {
         name: "index.tsx",
         attributes: {
-            path: "pages/index.tsx",
+          path: "pages/index.tsx",
+          dataRenderMethod: 'SSR',
+          props:'haha '
         },
         children: undefined
       },
-           {
+      {
         name: "api",
         attributes: {
-            path: "pages/api",
+          path: "pages/api",
+          dataRenderMethod: 'SSR',
+          props:'haha '
         },
         children: [
           {
             name: "hello.ts",
             attributes: {
-              path:"pages/api/hello.ts"
+              path:"pages/api/hello.ts",
+              dataRenderMethod: 'SSR',
+              props:'haha '
             },
             children: undefined
           }
@@ -73,6 +81,7 @@ export default function Home() {
   const [currentAttribute, setCurrentAttribute] = useState({
     path: "", 
     dataRenderMethod: '',
+    props: "",
   });
 
   useEffect(() => {
@@ -90,9 +99,12 @@ export default function Home() {
   useEffect(() => {
     const leafNodeArr = document.getElementsByClassName("rd3t-leaf-node");
     const nodeObj = document.getElementsByClassName("rd3t-node");
-    const arrayCallback = (v: HTMLElement) => {
+    const arrayCallback = (v: HTMLElement): void => {
       v.addEventListener("mouseover", (e:Event) => {
-        let newObj: attribute = {};
+        let newObj: attribute = {
+          path: '',
+          dataRenderMethod: '',
+        }
         let name: string = "";
 
         if(e.target.tagName === "text") {
@@ -103,10 +115,10 @@ export default function Home() {
           name = e.target.parentElement.getElementsByClassName("rd3t-label")[0].getElementsByTagName("text")[0].innerHTML.toLowerCase();
         }
 
-        console.log("name", name);
+        // console.log("name", name);
         newObj = {...attributes[name]};
-        console.log("newObj", newObj);
-        console.log("attributes", attributes);
+        // console.log("newObj", newObj);
+        // console.log("attributes", attributes);
         setCurrentAttribute(newObj);
       });
     }
@@ -144,14 +156,6 @@ export default function Home() {
     input != null ? value = input.value : value = ""
     console.log(value);
 
-    // fetch('/data', {
-    //   method: 'POST',
-    //   header: {
-    //     "Content-Type": "application/json"
-    //   },
-    //   body:JSON.stringify(value),
-    // })
-
     separateData(test);
     setTreeData(
       <Tree
@@ -166,27 +170,6 @@ export default function Home() {
         pathClassFunc={getDynamicPathClass}
       />
     );
-
-    const leafNodeArr = document.getElementsByClassName("rd3t-leaf-node");
-    const nodeObj = document.getElementsByClassName("rd3t-node");
-    console.log(nodeObj);
-    console.log(nodeObj.length);
-    
-    for (let key in nodeObj) {
-      console.log(nodeObj);
-      console.log("key", key);
-      console.log("nodeObj[key]", nodeObj[key]);
-      console.log("id", nodeObj[key].id);
-      console.log("Keys", Object.keys(nodeObj));
-      // nodeObj[key].addEventListener("mouseover", (e:Event) => {
-      //   const newObj: attributes = {};
-      //   const name: string = e.target.getElementsByTagName("text")[0].innerHTML;
-
-      //   newObj[name] = attributes[name]
-      //   setCurrentAttribute(newObj);
-      //   console.log("name", name);
-      // });
-    }
   }
 
 
@@ -199,12 +182,9 @@ export default function Home() {
         </div>
         <div className="info-panel">
           <InfoPanel att = {currentAttribute}/>
-
         </div>
-
         {treeData}
       </div>
-      
     </>
   )
 }
