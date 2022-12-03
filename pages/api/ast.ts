@@ -8,7 +8,8 @@ type Data = {
 }
 
 // hard-coded path for testing only
-const sourcePath = path.join(process.cwd(), "/pages/api/hello.ts")
+// const sourcePath = path.join(process.cwd(), "/pages/api/hello.ts")
+const sourcePath = '/Users/bapplemac16/Documents/codingProjectsPractice/nextJS/nextjs-blog/pages/about.js';
 console.log('sourcePath: ', sourcePath)
 
 const ast = runParser(sourcePath)
