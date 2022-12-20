@@ -18,7 +18,8 @@ interface newObj {
   name: string
   attributes: {
     path: string,
-    data: Record<string, unknown>
+    // data: Record<string, unknown>
+    dataRenderMethod: string
   }
   children: undefined|object[]
 }
@@ -36,14 +37,16 @@ export default function handler(
         name: file,
         attributes: {
           path: fullPath,
-          data: {}
+          dataRenderMethod: ''
         },
         children: undefined
       }
       if (fs.lstatSync(fullPath).isDirectory()) {
         obj.children = traverseDir(fullPath);
       } else {
-        obj.attributes.data = runParser(fullPath);
+        // obj.attributes.data = runParser(fullPath);
+        const data = runParser(fullPath);
+        obj.attributes.dataRenderMethod = data.renderMethod;
       }
 
       arr.push(obj)
