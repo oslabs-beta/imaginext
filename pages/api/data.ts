@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import type { NextApiRequest, NextApiResponse } from 'next'
-import path from 'path';
 import fs from 'fs';
+import type { NextApiRequest, NextApiResponse } from 'next';
+import path from 'path';
 import runParser from '../../lib/parser';
 
 // todo: add support to input a link or drag and drop.
@@ -30,26 +30,32 @@ export default function handler(
 ) {
 
   function traverseDir(dir:string) {
+    const validFileType:Array<string> = ['.ts', '.tsx', '.js', 'jsx'];
     const arr:object[] = [];
     fs.readdirSync(dir).forEach((file : string) => {
       const fullPath = path.join(dir, file);
-      const obj:newObj = {
-        name: file,
-        attributes: {
-          path: fullPath,
-          dataRenderMethod: ''
-        },
-        children: undefined
-      }
-      if (fs.lstatSync(fullPath).isDirectory()) {
-        obj.children = traverseDir(fullPath);
-      } else {
-        // obj.attributes.data = runParser(fullPath);
-        const data = runParser(fullPath);
-        obj.attributes.dataRenderMethod = data.renderMethod;
-      }
 
-      arr.push(obj)
+      // validate if file type is valid or if it's a folder
+      if (validFileType.includes(path.extname(file)) || fs.lstatSync(fullPath).isDirectory()) {
+        const obj:newObj = {
+          name: file,
+          attributes: {
+            path: fullPath,
+            dataRenderMethod: ''
+          },
+          children: undefined
+        }
+        if (fs.lstatSync(fullPath).isDirectory()) {
+          obj.children = traverseDir(fullPath);
+        } else {
+          // obj.attributes.data = runParser(fullPath);
+          const data = runParser(fullPath);
+          obj.attributes.dataRenderMethod = data.renderMethod;
+        }
+  
+        arr.push(obj)
+      } 
+
     });
     console.log('test',arr)
     return arr
