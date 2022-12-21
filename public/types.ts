@@ -1,13 +1,7 @@
-export interface inputData {
-  name: string;
-  attributes: attribute | undefined;
-  children?: child[];
-}
-
-export type child = {
+export interface node {
   name: string;
   attributes: attribute;
-  children?: child[];
+  children?: node[];
 }
 
 export type attribute = {

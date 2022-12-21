@@ -1,9 +1,10 @@
 import Head from 'next/head'
 import Image from 'next/image'
+import SearchBar from '../components/searchBar'
 import styles from '../styles/Home.module.css'
 import Tree from 'react-d3-tree'
 import { useState, useRef, useEffect } from 'react'
-import { inputData, child, attribute, attributes } from '../public/types'
+import { node, attribute, attributes } from '../public/types'
 import InfoPanel from '../components/infoPanel'
 
 /**
@@ -83,7 +84,7 @@ export default function Home() {
 
 
 
-  const getDynamicPathClass = ({ source, target }, orientation) => {
+  const getDynamicPathClass = ({ source, target }) => {
     if (!target.children) {
       // Target node has no children -> this link leads to a leaf node.
       return 'link__to-leaf';
@@ -93,7 +94,7 @@ export default function Home() {
     return 'link__to-branch';
   };
 
-  const separateData = (obj: inputData) => {
+  const separateData = (obj: node) => {
     attributes[obj.name] = obj.attributes;
     console.log("separateData attributes", attributes);
 
@@ -139,10 +140,12 @@ export default function Home() {
   return (
     <>
       <div ref={treeContainerRef} style={{ height: '100vh', overflow: "hidden" }}>
+        <SearchBar />
         <h3>locate the PAGES folder of your next.js project in vscode</h3>
         <h3>right click it, COPY PATH and paste below</h3>
+        <h3>C:\Users\leora\Desktop\CodesmithRepos\floppy-osp\pages</h3>
         <form onSubmit={onSubmit}>
-          <input ref={inputPath}></input>
+          <input placeholder="Routes Filepath..." ref={inputPath}></input>
           <button type='submit'>Submit</button>
         </form>
         <div className="info-panel">

@@ -30,10 +30,10 @@ export default function handler(
 ) {
 
   function traverseDir(dir:string) {
-    const arr:object[] = [];
+    const arr: object[] = [];
     fs.readdirSync(dir).forEach((file : string) => {
       const fullPath = path.join(dir, file);
-      const obj:newObj = {
+      const obj: newObj = {
         name: file,
         attributes: {
           path: fullPath,
