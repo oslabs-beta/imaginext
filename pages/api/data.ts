@@ -19,7 +19,8 @@ interface newObj {
   attributes: {
     path: string,
     // data: Record<string, unknown>
-    dataRenderMethod: string
+    dataRenderMethod: string,
+    fetchURL: string
   }
   children: undefined|object[]
 }
@@ -41,16 +42,19 @@ export default function handler(
           name: file,
           attributes: {
             path: fullPath,
-            dataRenderMethod: ''
+            dataRenderMethod: '',
+            fetchURL: ''
           },
           children: undefined
         }
         if (fs.lstatSync(fullPath).isDirectory()) {
           obj.children = traverseDir(fullPath);
         } else {
-          // obj.attributes.data = runParser(fullPath);
+          // run parser to get node attributes
           const data = runParser(fullPath);
+          console.log('runParser data: ', data)
           obj.attributes.dataRenderMethod = data.renderMethod;
+          obj.attributes.fetchURL = data.fetchURL;
         }
   
         arr.push(obj)
