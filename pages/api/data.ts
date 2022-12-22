@@ -28,7 +28,8 @@ export default function handler(
           attributes: {
             path: fullPath,
             dataRenderMethod: '',
-            fetchURL: ''
+            fetchURL: '',
+            props: ''
           },
           children: undefined
         }
@@ -38,7 +39,7 @@ export default function handler(
           // run parser to get node attributes
           const data = runParser(fullPath);
           console.log('runParser data: ', data)
-          obj.attributes.dataRenderMethod = data.renderMethod;
+          obj.attributes.dataRenderMethod = data.dataRenderMethod;
           obj.attributes.fetchURL = data.fetchURL;
         }
         arr.push(obj)
