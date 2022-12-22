@@ -1,25 +1,11 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
-import Tree from 'react-d3-tree'
-import { useState, useRef, useEffect } from 'react'
-import { inputData, child, attribute, attributes } from '../public/types'
-import InfoPanel from '../components/infoPanel'
+import { useEffect, useRef, useState } from 'react';
+import Tree from 'react-d3-tree';
+import InfoPanel from '../components/infoPanel';
+import { attribute, attributes, inputData } from '../public/types';
 
-/**
- * react-3d-tree is looking for the data entry in the following format: 
- * 
- * 
- interface RawNodeDatum {
-  name: string;
-  attributes?: Record<string, string | number | boolean>;
-  children?: RawNodeDatum[];
-}
- */
-
-const attributes : attributes = {
+const attributes: attributes = {
   pages: {
-    path: "test", 
+    path: "test",
     dataRenderMethod: 'test'
   }
 };
@@ -33,7 +19,7 @@ export default function Home() {
   
   const [treeData, setTreeData] = useState(<div className="initial-message">Please Upload A Project</div>);
   const [currentAttribute, setCurrentAttribute] = useState({
-    path: "", 
+    path: "",
     dataRenderMethod: '',
     props: "",
   });
@@ -61,11 +47,11 @@ export default function Home() {
         }
         let name: string = "";
 
-        if(e.target.tagName === "text") {
+        if (e.target.tagName === "text") {
           name = e.target.innerHTML.toLowerCase();
-        } else if(e.target.classList === "rd3t-label") {
+        } else if (e.target.classList === "rd3t-label") {
           name = e.target.getElementsByTagName("text")[0].innerHTML.toLowerCase();
-        } else if(e.target.tagName === "circle") {
+        } else if (e.target.tagName === "circle") {
           name = e.target.parentElement.getElementsByClassName("rd3t-label")[0].getElementsByTagName("text")[0].innerHTML.toLowerCase();
         }
 
@@ -80,8 +66,6 @@ export default function Home() {
     Array.from(leafNodeArr).forEach(arrayCallback);
     Array.from(nodeObj).forEach(arrayCallback);
   });
-
-
 
   const getDynamicPathClass = ({ source, target }, orientation) => {
     if (!target.children) {

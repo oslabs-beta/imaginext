@@ -4,6 +4,17 @@ export interface inputData {
   children?: child[];
 }
 
+export interface newObj {
+  name: string
+  attributes: {
+    path: string,
+    // data: Record<string, unknown>
+    dataRenderMethod: string,
+    fetchURL: string
+  }
+  children: undefined|object[]
+}
+
 export type child = {
   name: string;
   attributes: attribute;
