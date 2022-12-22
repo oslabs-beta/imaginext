@@ -1,26 +1,12 @@
-export interface inputData {
+export interface Data {
   name: string;
+  children: undefined | object[];
+}
+export interface newObj extends Data {
+  attributes: attribute;
+}
+export interface inputData extends Data {
   attributes?: attribute;
-  children: undefined | child[];
-}
-
-export interface newObj {
-  name: string
-  attributes: {
-    path: string,
-    // data: Record<string, unknown>
-    dataRenderMethod: string,
-    fetchURL: string
-  }
-  children: undefined|object[]
-}
-
-export type child = {
-  name: string;
-  attributes: {
-    path: string
-  };
-  children: undefined | child[];
 }
 export type postProject = {
   method: string
@@ -28,11 +14,12 @@ export type postProject = {
   body: string
 }
 export type header = {
-    
+
 }
 export type attribute = {
   path: string
   dataRenderMethod: string
+  fetchURL?: string
   props?: string
 }
 export type attributes = {

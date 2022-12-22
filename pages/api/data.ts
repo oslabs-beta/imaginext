@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import fs from 'fs';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import {inputData, newObj } from '../../public/types';
+import {newObj, Data } from '../../public/types';
 import path from 'path';
 import runParser from '../../lib/parser';
 
@@ -12,7 +12,7 @@ const currentProjectPath = path.join(process.cwd(), 'pages');
 
 export default function handler(
   req: NextApiRequest,
-  res: NextApiResponse<inputData> // setting the type from line 8
+  res: NextApiResponse<Data> // setting the type from line 8
 ) {
 
   function traverseDir(dir:string) {

@@ -16,7 +16,7 @@ export default function Home() {
 
   const shouldRecenterTreeRef = useRef(true);
   const [treeTranslate, setTreeTranslate] = useState({ x: 0, y: 0 });
-  const treeContainerRef = useRef(null);
+  const treeContainerRef = useRef<HTMLInputElement>(null);
 
   const [treeData, setTreeData] = useState(<div className="initial-message">Please Upload A Project</div>)
   const [currentAttribute, setCurrentAttribute] = useState({
@@ -34,7 +34,7 @@ export default function Home() {
         y: dimensions.height / 2,
       });
     }
-  });
+  }, []);
 
   useEffect(() => {
     const leafNodeArr = document.getElementsByClassName("rd3t-leaf-node");
@@ -44,11 +44,11 @@ export default function Home() {
         let newObj: attribute = {};
         let name = "";
 
-        if (e.target.tagName === "text") {
-          name = e.target.innerHTML.toLowerCase();
+        if ((e.target as HTMLInputElement).tagName === "text") {
+          name = (e.target as HTMLInputElement).innerHTML.toLowerCase();
         } else if (e.target.classList === "rd3t-label") {
-          name = e.target.getElementsByTagName("text")[0].innerHTML.toLowerCase();
-        } else if (e.target.tagName === "circle") {
+          name = (e.target as HTMLInputElement).getElementsByTagName("text")[0].innerHTML.toLowerCase();
+        } else if ((e.target as HTMLInputElement).tagName === "circle") {
           name = e.target.parentElement.getElementsByClassName("rd3t-label")[0].getElementsByTagName("text")[0].innerHTML.toLowerCase();
         }
 
