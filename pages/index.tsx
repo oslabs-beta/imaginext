@@ -7,20 +7,9 @@ import { useState, useRef, useEffect } from 'react'
 import { node, attribute, attributes } from '../public/types'
 import InfoPanel from '../components/infoPanel'
 
-/**
- * react-3d-tree is looking for the data entry in the following format: 
- * 
- * 
- interface RawNodeDatum {
-  name: string;
-  attributes?: Record<string, string | number | boolean>;
-  children?: RawNodeDatum[];
-}
- */
-
-const attributes : attributes = {
+const attributes: attributes = {
   pages: {
-    path: "test", 
+    path: "test",
     dataRenderMethod: 'test'
   }
 };
@@ -34,7 +23,7 @@ export default function Home() {
   
   const [treeData, setTreeData] = useState(<div className="initial-message">Please Upload A Project</div>);
   const [currentAttribute, setCurrentAttribute] = useState({
-    path: "", 
+    path: "",
     dataRenderMethod: '',
     props: "",
   });
@@ -62,11 +51,11 @@ export default function Home() {
         }
         let name: string = "";
 
-        if(e.target.tagName === "text") {
+        if (e.target.tagName === "text") {
           name = e.target.innerHTML.toLowerCase();
-        } else if(e.target.classList === "rd3t-label") {
+        } else if (e.target.classList === "rd3t-label") {
           name = e.target.getElementsByTagName("text")[0].innerHTML.toLowerCase();
-        } else if(e.target.tagName === "circle") {
+        } else if (e.target.tagName === "circle") {
           name = e.target.parentElement.getElementsByClassName("rd3t-label")[0].getElementsByTagName("text")[0].innerHTML.toLowerCase();
         }
 

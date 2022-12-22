@@ -5,7 +5,7 @@ export default function SearchBar(props: node ) {
   const [input, setInput] = useState('');
 
   const findNode = (data: node): void => {
-    // Search for node
+      // Search for node
     if(data.name === input) {
       // add className to that node
     } else {
@@ -14,7 +14,7 @@ export default function SearchBar(props: node ) {
 
     if(data.children !== undefined) {
       for(let i = 0; i < data.children.length; i++) {
-        findNode(data.children[i])
+        findNode(data.children[i]);
       }
     }
   }
