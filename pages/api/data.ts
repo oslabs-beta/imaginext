@@ -49,16 +49,17 @@ export default function handler(
     return arr
   }
   if (req.method === 'POST') {
-    const path = req.body.path;
+    const path = req.body.path.replace(/\\/g, '/');
+
     const lastPathItem = path.substring(path.lastIndexOf('/') + 1);
 
     // if input path is it's root. get into the pages directory and travese it instead.
     if (lastPathItem.toLowerCase() !== 'pages') {
-      res.status(200).json({ name: 'Pages', children: traverseDir(path+'/pages')})
+      res.status(200).json({ name: 'Pages', children: traverseDir(path + '/pages')})
     } else {
       res.status(200).json({ name: 'Pages', children: traverseDir(path)})
     }
-  }else {
+  } else {
     // change the argument in traverseDir
     res.status(200).json({ name: 'Pages', children: traverseDir(currentProjectPath)})
   }

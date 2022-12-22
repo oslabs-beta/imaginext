@@ -118,6 +118,7 @@ export default function Home() {
             branchNodeClassName="node__branch"
             leafNodeClassName="node__leaf"
             pathClassFunc={getDynamicPathClass}
+            onNodeMouseOver={(e)=>{console.log("Moused Over: ", e)}}
           />
         );
       })
