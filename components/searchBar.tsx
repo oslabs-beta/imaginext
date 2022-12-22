@@ -7,9 +7,9 @@ export default function SearchBar(props: node ) {
   const findNode = (data: node): void => {
     // Search for node
     if(data.name === input) {
-      //add className to that node
+      // add className to that node
     } else {
-      //remove className to that node
+      // remove className to that node
     }
 
     if(data.children !== undefined) {
@@ -20,14 +20,14 @@ export default function SearchBar(props: node ) {
   }
 
   useEffect(() => {
-    findNode(props)
+    findNode(props);
   });
 
   
   return (
     <>
       <div>
-        <input placeholder="Search..." onChange={(event: Event) => {setInput(event.target.value); console.log(input);}}/>
+        <input placeholder="Search..." onChange={(event: Event): void => {setInput(event.target.value); console.log(input);}}/>
       </div>
     </>
   )    
