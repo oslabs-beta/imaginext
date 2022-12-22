@@ -1,12 +1,8 @@
 import { parse } from '@typescript-eslint/typescript-estree';
 import fs from 'fs';
 import { walk } from 'estree-walker';
+import { attribute } from '../public/types';
 
-
-type DataObj = {
-  renderMethod: string,
-  fetchURL: string,
-}
 
 // TODO: add checks for client-side rendering and incremental static regeneration
 // TODO: currently only works with pages directory. add app directory
@@ -148,20 +144,22 @@ export function getRawTree(sourcePath: string){
 
 // main parser function that creates AST and returns node properties such as renderMethods
 export default function runParser(sourcePath: string){
-  const dataObj: DataObj = {
-    renderMethod: '',
+  const attributeObj: attribute = {
+    path: sourcePath,
+    dataRenderMethod: '',
     fetchURL: '',
+    props: ''
   }
   const rawTree = getRawTree(sourcePath);
 
   const renderMethod = getRenderMethod(rawTree);
-  console.log('renderMethod', renderMethod)
-  dataObj['renderMethod'] = renderMethod
+  console.log('dataRnderMethod', renderMethod)
+  attributeObj['dataRenderMethod'] = renderMethod
 
   console.log('getFetchData for:', sourcePath)
   const fetchData = getFetchData(rawTree);
   console.log('fetchData: ', fetchData)
-  dataObj['fetchURL'] = fetchData;
+  attributeObj['fetchURL'] = fetchData;
 
-  return dataObj;
+  return attributeObj;
 }
