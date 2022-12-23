@@ -5,6 +5,7 @@ export interface node {
 }
 
 export type attribute = {
+  id: string
   path: string
   dataRenderMethod: string
   props?: string

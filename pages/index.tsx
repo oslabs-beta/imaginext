@@ -9,6 +9,7 @@ import InfoPanel from '../components/infoPanel'
 
 const attributes: attributes = {
   pages: {
+    id: "test",
     path: "test",
     dataRenderMethod: 'test'
   }
@@ -23,12 +24,14 @@ export default function Home() {
   
   const [treeData, setTreeData] = useState(<div className="initial-message">Please Upload A Project</div>);
   const [currentAttribute, setCurrentAttribute] = useState({
+    id: '',
     path: "",
     dataRenderMethod: '',
     props: "",
   });
 
   useEffect(() => {
+    console.log("Setting dimensions...");
     if (treeContainerRef.current && shouldRecenterTreeRef.current) {
       shouldRecenterTreeRef.current = false;
       const dimensions = treeContainerRef.current.getBoundingClientRect();
@@ -41,34 +44,41 @@ export default function Home() {
   });
 
   useEffect(() => {
-    const leafNodeArr = document.getElementsByClassName("rd3t-leaf-node");
-    const nodeObj = document.getElementsByClassName("rd3t-node");
-    const arrayCallback = (v: HTMLElement): void => {
+    console.log("Adding event listeners...");
+    const leafNodeArr: HTMLCollectionOf<Element> = document.getElementsByClassName("rd3t-leaf-node");
+    const nodeObj: HTMLCollectionOf<Element> = document.getElementsByClassName("rd3t-node");
+    const arrayCallback = (v: Element): void => {
       v.addEventListener("mouseover", (e:Event) => {
-        let newObj: attribute = {
-          path: '',
-          dataRenderMethod: '',
-        }
+        let newObj: attribute;
         let name: string = "";
 
-        if (e.target.tagName === "text") {
-          name = e.target.innerHTML.toLowerCase();
-        } else if (e.target.classList === "rd3t-label") {
-          name = e.target.getElementsByTagName("text")[0].innerHTML.toLowerCase();
-        } else if (e.target.tagName === "circle") {
-          name = e.target.parentElement.getElementsByClassName("rd3t-label")[0].getElementsByTagName("text")[0].innerHTML.toLowerCase();
+        if(e.target !== null) {
+          if (e.target.tagName === "text") {
+            name = e.target.innerHTML.toLowerCase();
+          } else if (e.target.classList === "rd3t-label") {
+            name = e.target.getElementsByTagName("text")[0].innerHTML.toLowerCase();
+          } else if (e.target.tagName === "circle") {
+            name = e.target.parentElement.getElementsByClassName("rd3t-label")[0].getElementsByTagName("text")[0].innerHTML.toLowerCase();
+          }
         }
 
-        // console.log("name", name);
         newObj = {...attributes[name]};
-        // console.log("newObj", newObj);
-        // console.log("attributes", attributes);
         setCurrentAttribute(newObj);
       });
     }
 
     Array.from(leafNodeArr).forEach(arrayCallback);
     Array.from(nodeObj).forEach(arrayCallback);
+  });
+
+  useEffect(() => {
+    console.log("Adding IDs to attributes...");
+    const leafNodeArr: HTMLCollectionOf<Element> = document.getElementsByClassName("rd3t-leaf-node");
+    const nodeArr: Array<Element> = Array.from(leafNodeArr).concat(Array.from(document.getElementsByClassName("rd3t-node")));
+
+    Array.from(nodeArr).forEach((v) => {
+      attributes[v.lastChild.firstChild.innerHTML.toLowerCase()].id = v.id;
+    });
   });
 
 
@@ -85,8 +95,6 @@ export default function Home() {
 
   const separateData = (obj: node) => {
     attributes[obj.name] = obj.attributes;
-    console.log("separateData attributes", attributes);
-
     obj.attributes = undefined;
     
     if(obj.children === undefined) return
@@ -95,34 +103,37 @@ export default function Home() {
   }
 
   const onSubmit = (e: React.FormEvent) => {
-      const path: string = inputPath.current.value;
-      e.preventDefault();
-      //post 
-      fetch('http://localhost:3000/api/data', {
-          method: 'POST',
-          body: JSON.stringify({path: path}),
-          headers:{'Content-Type': 'application/json'}
-      })
-      .then((response) => response.json())
-      .then((json) => {
-        console.log(json)
-        separateData(json);
-        setTreeData(
-          <Tree
-            data={json}
-            collapsible={true}
-            pathFunc="diagonal"
-            translate={treeTranslate}
-            orientation="vertical"
-            rootNodeClassName="node__root"
-            branchNodeClassName="node__branch"
-            leafNodeClassName="node__leaf"
-            pathClassFunc={getDynamicPathClass}
-            onNodeMouseOver={(e)=>{console.log("Moused Over: ", e)}}
-          />
-        );
-      })
-      .catch((err) => console.log(err))
+    setTreeData(<div className="initial-message">Loading...</div>);
+    const path: string = inputPath.current !== null ? inputPath.current.value : "inputPath.current is null"
+    e.preventDefault();
+    //post 
+    fetch('http://localhost:3000/api/data', {
+      method: 'POST',
+      body: JSON.stringify({path: path}),
+      headers:{'Content-Type': 'application/json'}
+    })
+    .then((response) => response.json())
+    .then((json) => {
+      console.log(json)
+      separateData(json);
+      setTreeData(
+        <Tree
+          data={json}
+          collapsible={true}
+          pathFunc="diagonal"
+          translate={treeTranslate}
+          orientation="vertical"
+          rootNodeClassName="node__root"
+          branchNodeClassName="node__branch"
+          leafNodeClassName="node__leaf"
+          pathClassFunc={getDynamicPathClass}
+          onNodeMouseOver={(e)=>{console.log("Moused Over: ", e)}}
+          // onUpdate={(e)=>{console.log("On Update: ", e)}}
+        />
+      );
+    })
+    .then(() => {delete attributes["Pages"]})
+    .catch((err) => console.log(err))
   }
   
 
@@ -130,7 +141,7 @@ export default function Home() {
   return (
     <>
       <div ref={treeContainerRef} style={{ height: '100vh', overflow: "hidden" }}>
-        <SearchBar />
+        <SearchBar atts={attributes}/>
         <h3>locate the PAGES folder of your next.js project in vscode</h3>
         <h3>right click it, COPY PATH and paste below</h3>
         <h3>C:\Users\leora\Desktop\CodesmithRepos\floppy-osp\pages</h3>

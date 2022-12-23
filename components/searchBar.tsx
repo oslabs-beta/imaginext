@@ -1,15 +1,17 @@
 import {useState, useEffect} from 'react';
-import { node } from '../public/types';
+import { node, attributes } from '../public/types';
 
-export default function SearchBar(props: node ) {
+export default function SearchBar(props: attributes ) {
   const [input, setInput] = useState('');
 
-  const findNode = (data: node): void => {
-      // Search for node
-    if(data.name === input) {
+  const findNode = (data: attributes): void => {
+    for(let key in data) {
+      document.getElementById(data[key].id)?.classList.remove('activeNode');
+    }
+
+    if(data[input] !== undefined) {
       // add className to that node
-    } else {
-      // remove className to that node
+      document.getElementById(data[input].id)?.classList.add('activeNode');
     }
 
     if(data.children !== undefined) {
@@ -20,7 +22,7 @@ export default function SearchBar(props: node ) {
   }
 
   useEffect(() => {
-    findNode(props);
+    findNode(props.atts);
   });
 
   
