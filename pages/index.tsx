@@ -41,7 +41,7 @@ export default function Home() {
         y: dimensions.height / 2,
       });
     }
-  });
+  }, []);
 
   useEffect(() => {
     console.log("Adding event listeners...");
