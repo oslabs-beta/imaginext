@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import fs from 'fs';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import {inputData, newObj } from '../../public/types';
+import {newObj, Data } from '../../public/types';
 import path from 'path';
 import runParser from '../../lib/parser';
 
@@ -12,7 +12,7 @@ const currentProjectPath = path.join(process.cwd(), 'pages');
 
 export default function handler(
   req: NextApiRequest,
-  res: NextApiResponse<inputData> // setting the type from line 8
+  res: NextApiResponse<Data> // setting the type from line 8
 ) {
 
   function traverseDir(dir:string) {
@@ -28,7 +28,8 @@ export default function handler(
           attributes: {
             path: fullPath,
             dataRenderMethod: '',
-            fetchURL: ''
+            fetchURL: '',
+            props: ''
           },
           children: undefined
         }
@@ -38,7 +39,7 @@ export default function handler(
           // run parser to get node attributes
           const data = runParser(fullPath);
           console.log('runParser data: ', data)
-          obj.attributes.dataRenderMethod = data.renderMethod;
+          obj.attributes.dataRenderMethod = data.dataRenderMethod;
           obj.attributes.fetchURL = data.fetchURL;
         }
         arr.push(obj)
@@ -49,16 +50,17 @@ export default function handler(
     return arr
   }
   if (req.method === 'POST') {
-    const path = req.body.path;
+    const path = req.body.path.replace(/\\/g, '/');
+
     const lastPathItem = path.substring(path.lastIndexOf('/') + 1);
 
     // if input path is it's root. get into the pages directory and travese it instead.
     if (lastPathItem.toLowerCase() !== 'pages') {
-      res.status(200).json({ name: 'Pages', children: traverseDir(path+'/pages')})
+      res.status(200).json({ name: 'Pages', children: traverseDir(path + '/pages')})
     } else {
       res.status(200).json({ name: 'Pages', children: traverseDir(path)})
     }
-  }else {
+  } else {
     // change the argument in traverseDir
     res.status(200).json({ name: 'Pages', children: traverseDir(currentProjectPath)})
   }

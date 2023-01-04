@@ -53,7 +53,10 @@ a {
   fill: green;
   /* Let's also make the radius of leaf nodes larger */
   r:10;
+}
 
+.activeNode {
+  font-size: 50px;
 }
 
 @media (prefers-color-scheme: dark) {
