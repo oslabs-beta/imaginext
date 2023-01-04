@@ -1,8 +1,39 @@
+export interface node {
+  name: string;
+  attributes: attribute;
+  children?: node[];
+}
+
+export type attribute = {
+  id: string
+  path: string
+  dataRenderMethod: string
+  fetchURL?: string
+  props?: string
+}
+
+export type attributes = {
+  [name: string]: attribute
+}
+
+export type prop = {
+  type: string;
+  value: any;
+  parent: string;
+}
+
+export type props = {
+  [name: string]: prop
+}
+
+
+
+
+
 export interface Data {
   name: string;
   children: undefined | object[];
 }
-
 export interface newObj extends Data {
   attributes: attribute;
 }
@@ -18,14 +49,3 @@ export type postProject = {
 }
 
 export type header = Record<string, unknown>
-
-export type attribute = {
-  path: string
-  dataRenderMethod: string
-  fetchURL?: string
-  props?: string
-}
-
-export type attributes = {
-  [name: string]: attribute
-}

@@ -39,10 +39,6 @@ a {
   border-radius: 5px;
 }
 
-.rd3t-leaf-node, .rd3t-node {
-  
-}
-
 .node__root>circle {
   fill: blue;
   r:20
@@ -57,7 +53,10 @@ a {
   fill: green;
   /* Let's also make the radius of leaf nodes larger */
   r:10;
+}
 
+.activeNode {
+  font-size: 50px;
 }
 
 @media (prefers-color-scheme: dark) {

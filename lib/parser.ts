@@ -145,6 +145,7 @@ export function getRawTree(sourcePath: string){
 // main parser function that creates AST and returns node properties such as renderMethods
 export default function runParser(sourcePath: string){
   const attributeObj: attribute = {
+    id: '',
     path: sourcePath,
     dataRenderMethod: '',
     fetchURL: '',
