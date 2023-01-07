@@ -26,6 +26,7 @@ export default function handler(
         const obj:newObj = {
           name: file,
           attributes: {
+            id: '',
             path: fullPath,
             dataRenderMethod: '',
             fetchURL: '',
