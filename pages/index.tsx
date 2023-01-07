@@ -11,7 +11,7 @@ const attributes: attributes = {
   pages: {
     id: "test",
     path: "test",
-    dataRenderMethod: 'test'
+    dataRenderMethod: 'test',
   }
 };
 
@@ -20,10 +20,10 @@ export default function Home() {
 
   const shouldRecenterTreeRef = useRef(true);
   const [treeTranslate, setTreeTranslate] = useState({ x: 0, y: 0 });
-  const treeContainerRef = useRef(null);
+  const treeContainerRef = useRef<HTMLInputElement>(null);
   
   const [treeData, setTreeData] = useState(<div className="initial-message">Please Upload A Project</div>);
-  const [currentAttribute, setCurrentAttribute] = useState({
+  const [currentAttribute, setCurrentAttribute] = useState<attribute>({
     id: '',
     path: "",
     dataRenderMethod: '',
@@ -49,20 +49,20 @@ export default function Home() {
     const nodeObj: HTMLCollectionOf<Element> = document.getElementsByClassName("rd3t-node");
     const arrayCallback = (v: Element): void => {
       v.addEventListener("mouseover", (e:Event) => {
-        let newObj: attribute;
-        let name: string = "";
+        let name = "";
+        const target: Element = e.target as Element;
 
-        if(e.target !== null) {
-          if (e.target.tagName === "text") {
-            name = e.target.innerHTML.toLowerCase();
-          } else if (e.target.classList === "rd3t-label") {
-            name = e.target.getElementsByTagName("text")[0].innerHTML.toLowerCase();
-          } else if (e.target.tagName === "circle") {
-            name = e.target.parentElement.getElementsByClassName("rd3t-label")[0].getElementsByTagName("text")[0].innerHTML.toLowerCase();
+        if(target !== null) {
+          if (target.tagName === "text") {
+            name = target.innerHTML.toLowerCase();
+          } else if (target.classList.value === "rd3t-label") {
+            name = target.getElementsByTagName("text")[0].innerHTML.toLowerCase();
+          } else if (target.tagName === "circle" && target.parentElement !== null) {
+            name = target.parentElement?.getElementsByClassName("rd3t-label")[0].getElementsByTagName("text")[0].innerHTML.toLowerCase();
           }
         }
 
-        newObj = {...attributes[name]};
+        const newObj = {...attributes[name]};
         setCurrentAttribute(newObj);
       });
     }
@@ -75,15 +75,17 @@ export default function Home() {
     console.log("Adding IDs to attributes...");
     const leafNodeArr: HTMLCollectionOf<Element> = document.getElementsByClassName("rd3t-leaf-node");
     const nodeArr: Array<Element> = Array.from(leafNodeArr).concat(Array.from(document.getElementsByClassName("rd3t-node")));
+    
 
+    //const target: Element = e.target as Element;
+    
     Array.from(nodeArr).forEach((v) => {
-      attributes[v.lastChild.firstChild.innerHTML.toLowerCase()].id = v.id;
+      const child: Element = v.lastChild?.firstChild as Element;
+      attributes[child.innerHTML.toLowerCase()].id = v.id;
     });
   });
 
-
-
-  const getDynamicPathClass = ({ source, target }) => {
+  const getDynamicPathClass = ({target }) => {
     if (!target.children) {
       // Target node has no children -> this link leads to a leaf node.
       return 'link__to-leaf';

@@ -13,7 +13,7 @@ export type attribute = {
 }
 
 export type attributes = {
-  [name: string]: attribute
+  [name: string]: attribute;
 }
 
 export type prop = {

@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import path from 'path';
 import runParser from '../../lib/parser'
 
 // this endpoint is for testing only. import runParser and use function instead
