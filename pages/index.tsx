@@ -6,6 +6,7 @@ import Tree from 'react-d3-tree'
 import { useState, useRef, useEffect } from 'react'
 import { node, attribute, attributes } from '../public/types'
 import InfoPanel from '../components/infoPanel'
+import { log } from 'console'
 
 const attributes: attributes = {
   pages: {
@@ -20,10 +21,10 @@ export default function Home() {
 
   const shouldRecenterTreeRef = useRef(true);
   const [treeTranslate, setTreeTranslate] = useState({ x: 0, y: 0 });
-  const treeContainerRef = useRef(null);
+  const treeContainerRef = useRef<HTMLInputElement>(null);
   
   const [treeData, setTreeData] = useState(<div className="initial-message">Please Upload A Project</div>);
-  const [currentAttribute, setCurrentAttribute] = useState({
+  const [currentAttribute, setCurrentAttribute] = useState<attribute>({
     id: '',
     path: "",
     dataRenderMethod: '',
@@ -51,14 +52,15 @@ export default function Home() {
       v.addEventListener("mouseover", (e:Event) => {
         let newObj: attribute;
         let name: string = "";
-
+        const target: Element = e.target as Element;
+        
         if(e.target !== null) {
-          if (e.target.tagName === "text") {
-            name = e.target.innerHTML.toLowerCase();
-          } else if (e.target.classList === "rd3t-label") {
-            name = e.target.getElementsByTagName("text")[0].innerHTML.toLowerCase();
-          } else if (e.target.tagName === "circle") {
-            name = e.target.parentElement.getElementsByClassName("rd3t-label")[0].getElementsByTagName("text")[0].innerHTML.toLowerCase();
+          if (target.tagName === "text") {
+            name = target.innerHTML.toLowerCase();
+          } else if (target.classList.value === "rd3t-label") {
+            name = target.getElementsByTagName("text")[0].innerHTML.toLowerCase();
+          } else if (target.tagName === "circle" && target.parentElement) {
+            name = target.parentElement.getElementsByClassName("rd3t-label")[0].getElementsByTagName("text")[0].innerHTML.toLowerCase();
           }
         }
 
@@ -76,14 +78,15 @@ export default function Home() {
     const leafNodeArr: HTMLCollectionOf<Element> = document.getElementsByClassName("rd3t-leaf-node");
     const nodeArr: Array<Element> = Array.from(leafNodeArr).concat(Array.from(document.getElementsByClassName("rd3t-node")));
 
-    Array.from(nodeArr).forEach((v) => {
-      attributes[v.lastChild.firstChild.innerHTML.toLowerCase()].id = v.id;
+    Array.from(nodeArr).forEach((v: Element) => {
+      const child: Element = v.lastChild?.firstChild as Element;
+      attributes[child.innerHTML.toLowerCase()].id = v.id;
     });
   });
 
 
 
-  const getDynamicPathClass = ({ source, target }) => {
+  const getDynamicPathClass = ({ target }) => {
     if (!target.children) {
       // Target node has no children -> this link leads to a leaf node.
       return 'link__to-leaf';
