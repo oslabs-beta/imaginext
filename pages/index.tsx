@@ -12,7 +12,7 @@ const attributes: attributes = {
   pages: {
     id: "test",
     path: "test",
-    dataRenderMethod: 'test'
+    dataRenderMethod: 'test',
   }
 };
 
@@ -77,6 +77,7 @@ export default function Home() {
     console.log("Adding IDs to attributes...");
     const leafNodeArr: HTMLCollectionOf<Element> = document.getElementsByClassName("rd3t-leaf-node");
     const nodeArr: Array<Element> = Array.from(leafNodeArr).concat(Array.from(document.getElementsByClassName("rd3t-node")));
+    
 
     Array.from(nodeArr).forEach((v: Element) => {
       const child: Element = v.lastChild?.firstChild as Element;

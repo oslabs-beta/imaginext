@@ -5,7 +5,7 @@ export default function SearchBar(props: attributes ) {
   const [input, setInput] = useState('');
 
   const findNode = (data: attributes): void => {
-    for(let key in data) {
+    for(const key in data) {
       document.getElementById(data[key].id)?.classList.remove('activeNode');
     }
 
