@@ -1,7 +1,7 @@
 export interface node {
   name: string;
-  attributes: attribute;
-  children?: node[];
+  attributes: attribute | undefined;
+  children?: Array<node>;
 }
 
 export type attribute = {
@@ -13,7 +13,7 @@ export type attribute = {
 }
 
 export type attributes = {
-  [name: string]: attribute;
+  [name: string]: attribute
 }
 
 export type prop = {

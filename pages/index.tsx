@@ -6,6 +6,8 @@ import Tree from 'react-d3-tree'
 import { useState, useRef, useEffect } from 'react'
 import { node, attribute, attributes } from '../public/types'
 import InfoPanel from '../components/infoPanel'
+import { log } from 'console'
+import { TreeLinkDatum } from 'react-d3-tree/lib/types/common'
 
 const attributes: attributes = {
   pages: {
@@ -49,20 +51,21 @@ export default function Home() {
     const nodeObj: HTMLCollectionOf<Element> = document.getElementsByClassName("rd3t-node");
     const arrayCallback = (v: Element): void => {
       v.addEventListener("mouseover", (e:Event) => {
-        let name = "";
+        let newObj: attribute;
+        let name: string = "";
         const target: Element = e.target as Element;
-
-        if(target !== null) {
+        
+        if(e.target !== null) {
           if (target.tagName === "text") {
             name = target.innerHTML.toLowerCase();
           } else if (target.classList.value === "rd3t-label") {
             name = target.getElementsByTagName("text")[0].innerHTML.toLowerCase();
-          } else if (target.tagName === "circle" && target.parentElement !== null) {
-            name = target.parentElement?.getElementsByClassName("rd3t-label")[0].getElementsByTagName("text")[0].innerHTML.toLowerCase();
+          } else if (target.tagName === "circle" && target.parentElement) {
+            name = target.parentElement.getElementsByClassName("rd3t-label")[0].getElementsByTagName("text")[0].innerHTML.toLowerCase();
           }
         }
 
-        const newObj = {...attributes[name]};
+        newObj = {...attributes[name]};
         setCurrentAttribute(newObj);
       });
     }
@@ -77,16 +80,16 @@ export default function Home() {
     const nodeArr: Array<Element> = Array.from(leafNodeArr).concat(Array.from(document.getElementsByClassName("rd3t-node")));
     
 
-    //const target: Element = e.target as Element;
-    
-    Array.from(nodeArr).forEach((v) => {
+    Array.from(nodeArr).forEach((v: Element) => {
       const child: Element = v.lastChild?.firstChild as Element;
       attributes[child.innerHTML.toLowerCase()].id = v.id;
     });
   });
 
-  const getDynamicPathClass = ({target }) => {
-    if (!target.children) {
+
+
+  const getDynamicPathClass = (treeLink : TreeLinkDatum) => {
+    if (!treeLink.target.children) {
       // Target node has no children -> this link leads to a leaf node.
       return 'link__to-leaf';
     }
@@ -96,7 +99,7 @@ export default function Home() {
   };
 
   const separateData = (obj: node) => {
-    attributes[obj.name] = obj.attributes;
+    obj.attributes ? attributes[obj.name] = obj.attributes : {}
     obj.attributes = undefined;
     
     if(obj.children === undefined) return
