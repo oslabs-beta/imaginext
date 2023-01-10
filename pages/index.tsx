@@ -7,6 +7,7 @@ import { useState, useRef, useEffect } from 'react'
 import { node, attribute, attributes } from '../public/types'
 import InfoPanel from '../components/infoPanel'
 import { log } from 'console'
+import { TreeLinkDatum } from 'react-d3-tree/lib/types/common'
 
 const attributes: attributes = {
   pages: {
@@ -87,8 +88,8 @@ export default function Home() {
 
 
 
-  const getDynamicPathClass = ({ target }) => {
-    if (!target.children) {
+  const getDynamicPathClass = (treeLink : TreeLinkDatum) => {
+    if (!treeLink.target.children) {
       // Target node has no children -> this link leads to a leaf node.
       return 'link__to-leaf';
     }
@@ -98,7 +99,7 @@ export default function Home() {
   };
 
   const separateData = (obj: node) => {
-    attributes[obj.name] = obj.attributes;
+    obj.attributes ? attributes[obj.name] = obj.attributes : {}
     obj.attributes = undefined;
     
     if(obj.children === undefined) return
