@@ -79,7 +79,6 @@ export default function Home() {
     const leafNodeArr: HTMLCollectionOf<Element> = document.getElementsByClassName("rd3t-leaf-node");
     const nodeArr: Array<Element> = Array.from(leafNodeArr).concat(Array.from(document.getElementsByClassName("rd3t-node")));
     
-
     Array.from(nodeArr).forEach((v: Element) => {
       const child: Element = v.lastChild?.firstChild as Element;
       attributes[child.innerHTML.toLowerCase()].id = v.id;
