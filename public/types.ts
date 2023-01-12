@@ -13,7 +13,7 @@ export type attribute = {
 }
 
 export type attributes = {
-  [name: string]: attribute;
+  [name: string]: attribute
 }
 
 export type prop = {
@@ -48,4 +48,8 @@ export type postProject = {
   body: string;
 }
 
+<<<<<<< HEAD
 export type header = Record<string, unknown>;
+=======
+export type header = Record<string, unknown>
+>>>>>>> 67021e6937a169628ca8c2f68d8de98eb5f081a8
