@@ -23,7 +23,7 @@ export default function SearchBar(props: {atts: attributes} ) {
   return (
     <>
       <div>
-        <input className='input' placeholder="Search..." onChange={(event: React.FormEvent<HTMLInputElement>): void => {setInput(event.currentTarget.value); console.log(input);}}/>
+        <input className='input is-small is-rounded' placeholder="Search..." onChange={(event: React.FormEvent<HTMLInputElement>): void => {setInput(event.currentTarget.value); console.log(input);}}/>
       </div>
     </>
   )    

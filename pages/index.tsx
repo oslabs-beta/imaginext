@@ -1,10 +1,15 @@
 
+import Head from 'next/head'
+import Image from 'next/image'
 import SearchBar from '../components/searchBar'
+import styles from '../styles/Home.module.css'
 import Tree from 'react-d3-tree'
 import { useState, useRef, useEffect } from 'react'
 import { node, attribute, attributes } from '../public/types'
 import InfoPanel from '../components/infoPanel'
+import { log } from 'console'
 import { TreeLinkDatum } from 'react-d3-tree/lib/types/common'
+
 
 const attributes: attributes = {
   pages: {
@@ -139,12 +144,15 @@ export default function Home() {
   return (
     <>
       <div ref={treeContainerRef} style={{ height: '100vh', overflow: "hidden" }}>
-        <div className = 'logo is-size-1 has-text-centered m-6'>imagiNEXT</div>
+        <div className='has-text-centered m-6'>
+          <Image src='/imaginext.png' alt='logo' width={"350"} height={"350"} />
+          <div className = 'underline'></div>
+        </div>
         <div className = 'inputArea'>
           <SearchBar atts={attributes}/>
           <form onSubmit={onSubmit}>
-            <input className = 'input' placeholder="Routes Filepath..." ref={inputPath}></input>
-            <button className = 'button' type='submit'>Submit</button>
+            <input className = 'input is-small is-rounded' placeholder="Routes Filepath..." ref={inputPath}></input>
+            <button className = 'button is-small is-rounded is-outlined is-hovered submitbtn ml-1' type='submit'>Submit</button>
           </form>
         </div>
 
