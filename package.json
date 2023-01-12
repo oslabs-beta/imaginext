@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "bin": {
-    "floppy": "./floppy.js"
+    "floppy": "./floppy.js",
+    "go": "next dev"
   },
   "scripts": {
     "dev": "next dev",
