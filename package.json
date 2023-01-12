@@ -2,6 +2,9 @@
   "name": "floppy_osp",
   "version": "0.1.0",
   "private": true,
+  "bin": {
+    "floppy": "./bin/floppy"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
