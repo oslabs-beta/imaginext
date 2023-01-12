@@ -5,11 +5,11 @@ export interface node {
 }
 
 export type attribute = {
-  id: string
-  path: string
-  dataRenderMethod: string
-  fetchURL?: string
-  props?: string
+  id: string;
+  path: string;
+  dataRenderMethod: string;
+  fetchURL?: string;
+  props?: string;
 }
 
 export type attributes = {
@@ -23,7 +23,7 @@ export type prop = {
 }
 
 export type props = {
-  [name: string]: prop
+  [name: string]: prop;
 }
 
 
@@ -43,9 +43,13 @@ export interface inputData extends Data {
 }
 
 export type postProject = {
-  method: string
-  header: Record<string, unknown>,
-  body: string
+  method: string;
+  header: Record<string, unknown>;
+  body: string;
 }
 
+<<<<<<< HEAD
+export type header = Record<string, unknown>;
+=======
 export type header = Record<string, unknown>
+>>>>>>> 67021e6937a169628ca8c2f68d8de98eb5f081a8

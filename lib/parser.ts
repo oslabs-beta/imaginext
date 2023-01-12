@@ -29,15 +29,15 @@ export function getRenderMethod(tree: object) {
       }
     }
   })
-  console.log('exiting logAst')
+  console.log('exiting logAst');
 
   // assign default method of SSG
   if (renderMethod === '') {
     // console.log('assign default SSG')
-    renderMethod = 'SSG'
+    renderMethod = 'SSG';
   }
 
-  return renderMethod
+  return renderMethod;
 }
 
 
@@ -72,16 +72,16 @@ export function getSwrFetchData(tree: object) {
     enter: function(node) {
       if (node.type === 'CallExpression') {
         if (node.callee.type == 'Identifier' && node.callee.name === 'fetch') {
-          console.log('getSwrFetch node: ', node)
+          console.log('getSwrFetch node: ', node);
           // if (node.callee.arguments[0] === 'Identifier') {
             // fetch is being wrapped in a fetcher function
         }
         // using SWR react hook library for fetch calls
         else if (node.callee.type === 'Identifier' && node.callee.name === 'useSwr') {
-          console.log('getFetchData swr node:', node)
-          console.log('node.arguments[0].value', node.arguments[0].value)
+          console.log('getFetchData swr node:', node);
+          console.log('node.arguments[0].value', node.arguments[0].value);
           fetchURL = node.arguments[0].value;
-          console.log('fetchURL:', fetchURL)
+          console.log('fetchURL:', fetchURL);
         }
       }
     }
@@ -95,7 +95,7 @@ export function getFetchData(tree: object) {
   let fetchURL = '';
   // let usesSwr:boolean = false;
   
-  const usesSwr:boolean = checkImportSwr(tree);
+  const usesSwr: boolean = checkImportSwr(tree);
 
   // if true, then using swr hooks library for fetching
   if (usesSwr === true) {
@@ -115,7 +115,7 @@ export function getFetchData(tree: object) {
               console.log('getFetchData callExpression: ', node)
               console.log('getFetchData node.arguments[0].value', node.arguments[0].value)
               fetchURL = node.arguments[0].value;
-              console.log('fetchURL:', fetchURL)
+              console.log('fetchURL:', fetchURL);
             }
           } 
         }
@@ -128,9 +128,9 @@ export function getFetchData(tree: object) {
 }
 
 
-export function getRawTree(sourcePath: string){
+export function getRawTree(sourcePath: string) {
   // console.log('sourcePath: ', sourcePath)
-  const source = fs.readFileSync(sourcePath, "utf8")
+  const source = fs.readFileSync(sourcePath, "utf8");
   // console.log('source: ', source)
   
   const ast = parse(source, {
@@ -143,23 +143,23 @@ export function getRawTree(sourcePath: string){
 }
 
 // main parser function that creates AST and returns node properties such as renderMethods
-export default function runParser(sourcePath: string){
+export default function runParser(sourcePath: string) {
   const attributeObj: attribute = {
     id: '',
     path: sourcePath,
     dataRenderMethod: '',
     fetchURL: '',
     props: ''
-  }
+  };
   const rawTree = getRawTree(sourcePath);
 
   const renderMethod = getRenderMethod(rawTree);
-  console.log('dataRnderMethod', renderMethod)
-  attributeObj['dataRenderMethod'] = renderMethod
+  console.log('dataRnderMethod', renderMethod);
+  attributeObj['dataRenderMethod'] = renderMethod;
 
-  console.log('getFetchData for:', sourcePath)
+  console.log('getFetchData for:', sourcePath);
   const fetchData = getFetchData(rawTree);
-  console.log('fetchData: ', fetchData)
+  console.log('fetchData: ', fetchData);
   attributeObj['fetchURL'] = fetchData;
 
   return attributeObj;

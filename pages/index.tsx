@@ -2,14 +2,13 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import SearchBar from '../components/searchBar'
-import styles from '../styles/Home.module.css'
+// import styles from '../styles/Home.module.css'
 import Tree from 'react-d3-tree'
 import { useState, useRef, useEffect } from 'react'
 import { node, attribute, attributes } from '../public/types'
 import InfoPanel from '../components/infoPanel'
 import { log } from 'console'
 import { TreeLinkDatum } from 'react-d3-tree/lib/types/common'
-
 
 const attributes: attributes = {
   pages: {
@@ -81,7 +80,6 @@ export default function Home() {
     const leafNodeArr: HTMLCollectionOf<Element> = document.getElementsByClassName("rd3t-leaf-node");
     const nodeArr: Array<Element> = Array.from(leafNodeArr).concat(Array.from(document.getElementsByClassName("rd3t-node")));
     
-
     Array.from(nodeArr).forEach((v: Element) => {
       const child: Element = v.lastChild?.firstChild as Element;
       attributes[child.innerHTML.toLowerCase()].id = v.id;
