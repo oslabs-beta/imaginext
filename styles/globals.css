@@ -1,9 +1,16 @@
+@import "https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css";
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@600&display=swap');
+
+
 html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+  font-family:'Inconsolata',
+    monospace, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  background-color: #f5f5ef;
 }
 
 a {
@@ -30,27 +37,27 @@ a {
 
 .info-panel {
   position: absolute;
-  bottom: 0px;
-  right: 0px;
-  width: 300px;
-  height: 300px;
+  bottom: 200px;
+  right: 50px;
+  width: 250px;
+  height: 200px;
   padding: 5px;
-  border: solid;
   border-radius: 5px;
+  box-shadow: 10px 10px 5px 12px lightgrey;
 }
 
 .node__root>circle {
-  fill: blue;
+  fill: lightblue;
   r:20
 }
 
 .node__branch>circle {
-  fill: yellow;
+  fill: lightgoldenrodyellow;
   r:15;
 }
 
 .node__leaf>circle {
-  fill: green;
+  fill: #cadebb;
   /* Let's also make the radius of leaf nodes larger */
   r:10;
 }
@@ -77,4 +84,37 @@ a {
   .rd3t-node, .rd3t-leaf-node {
     stroke: white !important;
   }
+}
+
+/* newly added */
+.inputArea{
+  display:flex;
+  flex-direction: row;
+  gap: 200px;
+  justify-content: center;
+  align-items: center;
+}
+form {
+  display: flex;
+  flex-wrap: nowrap;
+}
+.card-content{
+  display: flex;
+  flex-direction: column;
+  gap:1rem;
+}
+.testFont{
+  font-family: 'Sofia Sans Extra Condensed';
+}
+.submitbtn{
+  background-color: #f4f4f4;
+  font-family: 'Inconsolata',
+    monospace;;
+}
+.underline{
+    width: 6rem;
+    height: 0.25rem;
+    background: #c5dae8;
+    margin-left: auto;
+    margin-right: auto;
 }
