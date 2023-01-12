@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import SearchBar from '../components/searchBar'
-import styles from '../styles/Home.module.css'
+// import styles from '../styles/Home.module.css'
 import Tree from 'react-d3-tree'
 import { useState, useRef, useEffect } from 'react'
 import { node, attribute, attributes } from '../public/types'
@@ -151,7 +151,7 @@ export default function Home() {
         <h3>C:\Users\leora\Desktop\CodesmithRepos\floppy-osp\pages</h3>
         <form onSubmit={onSubmit}>
           <input placeholder="Routes Filepath..." ref={inputPath}></input>
-          <button type='submit'>Submit</button>
+          <button type='submit' className = "button is-info">Submit</button>
         </form>
         <div className="info-panel">
           <InfoPanel att = {currentAttribute}/>
