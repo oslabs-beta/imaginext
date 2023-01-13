@@ -40,6 +40,92 @@ export function getRenderMethod(tree: object) {
   return renderMethod;
 }
 
+export function checkReturn(tree: object) {
+  let propsParsedObj: Record<string, unknown> = {};
+  
+  walk(tree, {
+    enter: function (node) {
+      if (node.type === 'ExportNamedDeclaration') {
+        if (node.declaration.type === 'FunctionDeclaration') {
+          if (node.declaration.id.name === 'getStaticProps') {
+            // todo
+            console.log('todo')
+
+            console.log('node.declaration.body.body: ', node.declaration.body.body)
+            // console.log('checkReturn propsParsedObj: ', propsParsedObj)
+            // console.log('checkReturn propsReturn.argument: ', propsReturn.argument)
+            
+            // props.testKey = 'testValue'
+            this.skip();
+            const results =  checkProps(node);
+            console.log('checkReturn calling checkProps: ', results)
+            propsParsedObj = results;
+            console.log('propsParsedObj = results', propsParsedObj)
+
+          }
+          else if (node.declaration.id.name === 'getServerSideProps') {
+            console.log('todo')
+
+            console.log('node.declaration.body.body: ', node.declaration.body.body)
+            // console.log('checkReturn propsParsedObj: ', propsParsedObj)
+            // console.log('checkReturn propsReturn.argument: ', propsReturn.argument)
+            
+            
+            // props.testKey = 'testValue'
+            this.skip();
+            const results = checkProps(node);
+            console.log('checkReturn calling checkProps: ', results)
+            propsParsedObj = results;
+            console.log('propsParsedObj = results', propsParsedObj)
+
+          }
+          else console.log("doesn't pass if check")
+        }  
+      }
+    }
+  })
+
+  console.log('propsParsedObj before return: ', propsParsedObj)
+  return propsParsedObj;
+}
+
+
+export function checkProps(tree: object) {
+  const propsParsed: Record<string, unknown> = {};
+
+  walk(tree, {
+    enter: function (node) {
+      if (node.type === 'ReturnStatement') {
+        console.log('ReturnStatement node: ', node)
+        console.log('ReturnStatement node.type: ', node.type)
+        console.log('ReturnStatement node.argument.properties: ', node.argument.properties)
+
+        // check for a 'props' object and parse it
+        walk(tree, {
+          enter: function (node) {
+            if (node.type === 'Property' && node.key) {
+              console.log('property node: ', node)
+              if (node.key.type === 'Identifier' && node.key.name === 'props') {
+                if (node.value.type === 'ObjectExpression') {
+                  console.log('ObjectExpression: ', node.value)
+                  console.log('ObjectExpression node.value.properties: ', node.value.properties)
+
+                  for (let i = 0; i < node.value.properties.length; i++) {
+                    propsParsed[node.value.properties[i].key.name] = node.value.properties[i].value.value;
+                  }
+                }
+              }
+            }
+          }
+        })
+      }
+    }
+  })
+
+  console.log('propsParsed: ', propsParsed)
+  return propsParsed;
+}
+
 
 // check if importing SWR react hook library for fetch calls
 // TODO possibly refactor to grab all imports first as array/object and then check imports for swr, to allow checking for other types of imports later
@@ -149,7 +235,7 @@ export default function runParser(sourcePath: string) {
     path: sourcePath,
     dataRenderMethod: '',
     fetchURL: '',
-    props: ''
+    props: {}
   };
   const rawTree = getRawTree(sourcePath);
 
@@ -161,6 +247,10 @@ export default function runParser(sourcePath: string) {
   const fetchData = getFetchData(rawTree);
   console.log('fetchData: ', fetchData);
   attributeObj['fetchURL'] = fetchData;
+
+  const propsObj = checkReturn(rawTree);
+  console.log('propsObj in main parser: ', propsObj)
+  attributeObj.props = propsObj;
 
   return attributeObj;
 }

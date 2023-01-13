@@ -9,7 +9,7 @@ export type attribute = {
   path: string;
   dataRenderMethod: string;
   fetchURL?: string;
-  props?: string;
+  props?: Record<string, unknown>;
 }
 
 export type attributes = {
@@ -48,8 +48,4 @@ export type postProject = {
   body: string;
 }
 
-<<<<<<< HEAD
-export type header = Record<string, unknown>;
-=======
 export type header = Record<string, unknown>
->>>>>>> 67021e6937a169628ca8c2f68d8de98eb5f081a8
