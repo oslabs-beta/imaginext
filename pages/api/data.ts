@@ -10,7 +10,7 @@ import runParser from '../../lib/parser';
 const currentProjectPath = path.join(process.cwd(), 'pages');
 // const otherPath = '/Users/richter/Downloads/playground/my-app/pages'; // put in some other path to check
 
-export default function handler(
+export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data> // setting the type from line 8
 ) {
@@ -30,7 +30,7 @@ export default function handler(
             path: fullPath,
             dataRenderMethod: '',
             fetchURL: '',
-            props: ''
+            props: {}
           },
           children: undefined
         }
@@ -42,12 +42,14 @@ export default function handler(
           console.log('runParser data: ', data)
           obj.attributes.dataRenderMethod = data.dataRenderMethod;
           obj.attributes.fetchURL = data.fetchURL;
+          obj.attributes.props = data.props;
+          console.log('obj.attributes.props: ', obj.attributes.props)
         }
         arr.push(obj)
       } 
 
     });
-    console.log('test',arr)
+    console.log('parsed node attributes being sent to frontend',arr)
     return arr
   }
   if (req.method === 'POST') {

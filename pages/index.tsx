@@ -30,7 +30,7 @@ export default function Home() {
     id: '',
     path: "",
     dataRenderMethod: '',
-    props: "",
+    props: {},
   });
 
   useEffect(() => {
@@ -52,8 +52,8 @@ export default function Home() {
     const nodeObj: HTMLCollectionOf<Element> = document.getElementsByClassName("rd3t-node");
     const arrayCallback = (v: Element): void => {
       v.addEventListener("mouseover", (e:Event) => {
-        let newObj: attribute;
-        let name: string = "";
+        // let newObj: attribute;
+        let name = "";
         const target: Element = e.target as Element;
         
         if(e.target !== null) {
@@ -66,7 +66,8 @@ export default function Home() {
           }
         }
 
-        newObj = {...attributes[name]};
+        // newObj = {...attributes[name]};
+        const newObj: attribute = {...attributes[name]};
         setCurrentAttribute(newObj);
       });
     }

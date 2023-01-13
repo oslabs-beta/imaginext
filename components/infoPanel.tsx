@@ -4,6 +4,10 @@ export default function InfoPanel (props: {att:attribute}) {
   let path: string = props.att.path;
   const dataRenderMethod: string = props.att.dataRenderMethod;
   const endpoint: string = props.att.fetchURL !== undefined ? props.att.fetchURL : '';
+  const nodePropsObject = JSON.stringify(props.att.props);
+  console.log('nodePropsObject: ', nodePropsObject)
+
+
   const clearPath = (path: string):string => {
     let newPath = path.split('/')
     for (let i = 0; i < newPath.length; i++){
@@ -20,7 +24,7 @@ export default function InfoPanel (props: {att:attribute}) {
         <div>Path: {path}</div>
         <div>Data Render Method: {dataRenderMethod}</div>
         <div>Fetch Endpoint: {endpoint}</div>
-        <div>Props:</div>
+        <div>Props: {nodePropsObject} </div>
       </div>
     </>
   )
