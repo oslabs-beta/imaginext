@@ -47,38 +47,16 @@ export function checkReturn(tree: object) {
     enter: function (node) {
       if (node.type === 'ExportNamedDeclaration') {
         if (node.declaration.type === 'FunctionDeclaration') {
-          if (node.declaration.id.name === 'getStaticProps') {
-            // todo
-            console.log('todo')
-
-            console.log('node.declaration.body.body: ', node.declaration.body.body)
-            // console.log('checkReturn propsParsedObj: ', propsParsedObj)
-            // console.log('checkReturn propsReturn.argument: ', propsReturn.argument)
+          if (node.declaration.id.name === 'getStaticProps' || node.declaration.id.name === 'getServerSideProps') {
             
-            // props.testKey = 'testValue'
-            this.skip();
+            console.log('node.declaration.body.body: ', node.declaration.body.body)
             const results =  checkProps(node);
             console.log('checkReturn calling checkProps: ', results)
             propsParsedObj = results;
             console.log('propsParsedObj = results', propsParsedObj)
-
-          }
-          else if (node.declaration.id.name === 'getServerSideProps') {
-            console.log('todo')
-
-            console.log('node.declaration.body.body: ', node.declaration.body.body)
-            // console.log('checkReturn propsParsedObj: ', propsParsedObj)
-            // console.log('checkReturn propsReturn.argument: ', propsReturn.argument)
-            
-            
-            // props.testKey = 'testValue'
             this.skip();
-            const results = checkProps(node);
-            console.log('checkReturn calling checkProps: ', results)
-            propsParsedObj = results;
-            console.log('propsParsedObj = results', propsParsedObj)
-
           }
+
           else console.log("doesn't pass if check")
         }  
       }
