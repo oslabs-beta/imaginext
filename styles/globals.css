@@ -40,10 +40,11 @@ a {
   bottom: 200px;
   right: 50px;
   width: 250px;
-  height: 200px;
+  height: 300px;
   padding: 5px;
   border-radius: 5px;
   box-shadow: 10px 10px 5px 12px lightgrey;
+  overflow-wrap: break-word;
 }
 
 .node__root>circle {
