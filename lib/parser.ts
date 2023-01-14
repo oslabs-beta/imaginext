@@ -111,7 +111,12 @@ export function checkProps(tree: object) {
                   console.log('ObjectExpression node.value.properties: ', node.value.properties)
 
                   for (let i = 0; i < node.value.properties.length; i++) {
-                    propsParsed[node.value.properties[i].key.name] = node.value.properties[i].value.value;
+                    const currentProp = node.value.properties;
+                    propsParsed[currentProp[i].key.name] = node.value.properties[i].value.value;
+                    //convert undefined/undeclared values to null to preserve property name when converting to json
+                    if (node.value.properties[i].value.value === undefined) {
+                      propsParsed[currentProp[i].key.name] = null;
+                    }
                   }
                 }
               }
