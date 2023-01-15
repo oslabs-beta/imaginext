@@ -38,18 +38,19 @@ export default async function handler(
           obj.children = traverseDir(fullPath);
         } else {
           // run parser to get node attributes
+          console.log('data.ts invoking runParser on path: ', fullPath)
           const data = runParser(fullPath);
-          console.log('runParser data: ', data)
+          // console.log('runParser data: ', data)
           obj.attributes.dataRenderMethod = data.dataRenderMethod;
           obj.attributes.fetchURL = data.fetchURL;
           obj.attributes.props = data.props;
-          console.log('obj.attributes.props: ', obj.attributes.props)
+          // console.log('obj.attributes.props: ', obj.attributes.props)
         }
         arr.push(obj)
       } 
 
     });
-    console.log('parsed node attributes being sent to frontend',arr)
+    // console.log('parsed node attributes being sent to frontend',arr)
     return arr
   }
   if (req.method === 'POST') {
