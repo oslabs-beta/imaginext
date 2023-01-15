@@ -15,7 +15,14 @@ export function getRenderMethod(tree: object) {
           if (node.declaration.id.name === 'getStaticProps') {
             // console.log('ExportNamedDeclaration node:', node)
             // console.log('render method: SSG')
-            renderMethod = 'SSG';
+            //check for incremental static regeneration
+            const isUsingRevalidation = checkIfRevalidation(node);
+            console.log('getRenderMethod isUsingRevalidation: ', isUsingRevalidation)
+            if (isUsingRevalidation === true) {
+              renderMethod = 'ISR'
+            } else {
+              renderMethod = 'SSG';
+            }
             this.skip();
           }
           else if (node.declaration.id.name === 'getServerSideProps') {
@@ -29,7 +36,7 @@ export function getRenderMethod(tree: object) {
       }
     }
   })
-  console.log('exiting logAst');
+  // console.log('exiting logAst');
 
   // assign default method of SSG
   if (renderMethod === '') {
@@ -47,45 +54,25 @@ export function checkReturn(tree: object) {
     enter: function (node) {
       if (node.type === 'ExportNamedDeclaration') {
         if (node.declaration.type === 'FunctionDeclaration') {
-          if (node.declaration.id.name === 'getStaticProps') {
-            // todo
-            console.log('todo')
-
-            console.log('node.declaration.body.body: ', node.declaration.body.body)
-            // console.log('checkReturn propsParsedObj: ', propsParsedObj)
-            // console.log('checkReturn propsReturn.argument: ', propsReturn.argument)
+          if (node.declaration.id.name === 'getStaticProps' || node.declaration.id.name === 'getServerSideProps') {
             
-            // props.testKey = 'testValue'
-            this.skip();
+            // console.log('node.declaration.body.body: ', node.declaration.body.body)
             const results =  checkProps(node);
-            console.log('checkReturn calling checkProps: ', results)
+            // console.log('checkReturn calling checkProps: ', results)
             propsParsedObj = results;
-            console.log('propsParsedObj = results', propsParsedObj)
-
-          }
-          else if (node.declaration.id.name === 'getServerSideProps') {
-            console.log('todo')
-
-            console.log('node.declaration.body.body: ', node.declaration.body.body)
-            // console.log('checkReturn propsParsedObj: ', propsParsedObj)
-            // console.log('checkReturn propsReturn.argument: ', propsReturn.argument)
-            
-            
-            // props.testKey = 'testValue'
+            // console.log('propsParsedObj = results', propsParsedObj)
             this.skip();
-            const results = checkProps(node);
-            console.log('checkReturn calling checkProps: ', results)
-            propsParsedObj = results;
-            console.log('propsParsedObj = results', propsParsedObj)
-
           }
-          else console.log("doesn't pass if check")
+
+          else {
+            console.log("checkReturn: doesn't pass if check")
+          }
         }  
       }
     }
   })
 
-  console.log('propsParsedObj before return: ', propsParsedObj)
+  // console.log('propsParsedObj before return: ', propsParsedObj)
   return propsParsedObj;
 }
 
@@ -96,22 +83,27 @@ export function checkProps(tree: object) {
   walk(tree, {
     enter: function (node) {
       if (node.type === 'ReturnStatement') {
-        console.log('ReturnStatement node: ', node)
-        console.log('ReturnStatement node.type: ', node.type)
-        console.log('ReturnStatement node.argument.properties: ', node.argument.properties)
+        // console.log('ReturnStatement node: ', node)
+        // console.log('ReturnStatement node.type: ', node.type)
+        // console.log('ReturnStatement node.argument.properties: ', node.argument.properties)
 
         // check for a 'props' object and parse it
         walk(tree, {
           enter: function (node) {
             if (node.type === 'Property' && node.key) {
-              console.log('property node: ', node)
+              // console.log('property node: ', node)
               if (node.key.type === 'Identifier' && node.key.name === 'props') {
                 if (node.value.type === 'ObjectExpression') {
-                  console.log('ObjectExpression: ', node.value)
-                  console.log('ObjectExpression node.value.properties: ', node.value.properties)
+                  // console.log('ObjectExpression: ', node.value)
+                  // console.log('ObjectExpression node.value.properties: ', node.value.properties)
 
                   for (let i = 0; i < node.value.properties.length; i++) {
-                    propsParsed[node.value.properties[i].key.name] = node.value.properties[i].value.value;
+                    const currentProp = node.value.properties;
+                    propsParsed[currentProp[i].key.name] = node.value.properties[i].value.value;
+                    //convert undefined/undeclared values to null to preserve property name when converting to json
+                    if (node.value.properties[i].value.value === undefined) {
+                      propsParsed[currentProp[i].key.name] = null;
+                    }
                   }
                 }
               }
@@ -122,10 +114,44 @@ export function checkProps(tree: object) {
     }
   })
 
-  console.log('propsParsed: ', propsParsed)
+  // console.log('propsParsed: ', propsParsed)
   return propsParsed;
 }
 
+
+export function checkIfRevalidation(tree: object): boolean {
+  let result = false;
+  
+  walk(tree, {
+    enter: function (node) {
+      if (node.type === 'ReturnStatement') {
+        console.log('ReturnStatement node found')
+        // console.log('ReturnStatement node.type: ', node.type)
+        // console.log('ReturnStatement node.argument.properties: ', node.argument.properties)
+
+        // check for a 'props' object and parse it
+        walk(tree, {
+          enter: function (node) {
+            if (node.type === 'Property' && node.key) {
+              // console.log('property node: ', node)
+              if (node.key.type === 'Identifier' && node.key.name === 'revalidate') {
+                console.log('revalidate', node.value.type)
+                result = true;
+                this.skip()
+              }
+            }
+          }
+        })
+      }
+      else {
+        return false;
+      }
+    }
+  })
+
+  console.log('isUsingRevalidation: ', result)
+  return result;
+}
 
 // check if importing SWR react hook library for fetch calls
 // TODO possibly refactor to grab all imports first as array/object and then check imports for swr, to allow checking for other types of imports later
@@ -138,7 +164,7 @@ export function checkImportSwr(tree: object):boolean {
         // if (node.specifiers.local.type === 'Identifier' && node.specifiers.local.name === 'useSwr') {
         //   console.log('getFetchData swr node.specifiers: ', node.specifiers)
         //   this.skip();
-        console.log('checkImportSwr node:', node)
+        // console.log('checkImportSwr node:', node)
         result = true;
         this.skip();
         // }
@@ -158,16 +184,16 @@ export function getSwrFetchData(tree: object) {
     enter: function(node) {
       if (node.type === 'CallExpression') {
         if (node.callee.type == 'Identifier' && node.callee.name === 'fetch') {
-          console.log('getSwrFetch node: ', node);
+          // console.log('getSwrFetch node: ', node);
           // if (node.callee.arguments[0] === 'Identifier') {
             // fetch is being wrapped in a fetcher function
         }
         // using SWR react hook library for fetch calls
         else if (node.callee.type === 'Identifier' && node.callee.name === 'useSwr') {
-          console.log('getFetchData swr node:', node);
-          console.log('node.arguments[0].value', node.arguments[0].value);
+          // console.log('getFetchData swr node:', node);
+          // console.log('node.arguments[0].value', node.arguments[0].value);
           fetchURL = node.arguments[0].value;
-          console.log('fetchURL:', fetchURL);
+          // console.log('fetchURL:', fetchURL);
         }
       }
     }
@@ -195,13 +221,13 @@ export function getFetchData(tree: object) {
   
           // uses fetch()
           if (node.callee.type === 'Identifier' && node.callee.name === 'fetch') {
-            console.log('getFetchData node.callee: ', node.callee)
+            // console.log('getFetchData node.callee: ', node.callee)
             // invokes simple fetch() call with a literal argument
             if (node.arguments[0].type === 'Literal') {
-              console.log('getFetchData callExpression: ', node)
-              console.log('getFetchData node.arguments[0].value', node.arguments[0].value)
+              // console.log('getFetchData callExpression: ', node)
+              // console.log('getFetchData node.arguments[0].value', node.arguments[0].value)
               fetchURL = node.arguments[0].value;
-              console.log('fetchURL:', fetchURL);
+              // console.log('fetchURL:', fetchURL);
             }
           } 
         }
@@ -209,7 +235,7 @@ export function getFetchData(tree: object) {
     })
   }
 
-  console.log('exiting getFetchData');
+  // console.log('exiting getFetchData');
   return fetchURL;
 }
 
@@ -240,16 +266,16 @@ export default function runParser(sourcePath: string) {
   const rawTree = getRawTree(sourcePath);
 
   const renderMethod = getRenderMethod(rawTree);
-  console.log('dataRnderMethod', renderMethod);
+  // console.log('dataRnderMethod', renderMethod);
   attributeObj['dataRenderMethod'] = renderMethod;
 
-  console.log('getFetchData for:', sourcePath);
+  // console.log('getFetchData for:', sourcePath);
   const fetchData = getFetchData(rawTree);
-  console.log('fetchData: ', fetchData);
+  // console.log('fetchData: ', fetchData);
   attributeObj['fetchURL'] = fetchData;
 
   const propsObj = checkReturn(rawTree);
-  console.log('propsObj in main parser: ', propsObj)
+  // console.log('propsObj in main parser: ', propsObj)
   attributeObj.props = propsObj;
 
   return attributeObj;
