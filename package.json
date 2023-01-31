@@ -1,7 +1,7 @@
 {
-  "name": "floppy_osp",
-  "version": "0.1.0",
-  "private": true,
+  "name": "imaginext",
+  "version": "0.0.3",
+  "private": false,
   "bin": {
     "floppy": "./floppy.js"
   },
@@ -28,10 +28,13 @@
     "eslint": "8.28.0",
     "eslint-config-next": "13.0.4",
     "estree-walker": "^3.0.1",
+    "imaginext": "^0.0.3",
     "next": "13.0.4",
     "react": "18.2.0",
     "react-d3-tree": "^3.3.5",
     "react-dom": "18.2.0",
-    "typescript": "4.9.3"
+    "seaspider": "^0.1.0",
+    "typescript": "4.9.3",
+    "typespider": "^0.0.1"
   }
 }
