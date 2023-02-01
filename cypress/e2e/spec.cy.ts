@@ -11,4 +11,10 @@ context('login and signup testing', () => {
     cy.get('input').last().parent().should('be.visible')
   })
 
+  specify('test', () => {
+    cy.get('input').last().parent().type('/Users/richter/Downloads/playground/imaginext/pages')
+    cy.get('button').focused().click()
+    cy.wait(3000)
+  })
+
 })
