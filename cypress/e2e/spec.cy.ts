@@ -1,5 +1,6 @@
 /// <reference types="cypress" />
 
+const path = Cypress.env("path")
 context('login and signup testing', () => { 
   beforeEach(() => {
     cy.visit('http://localhost:3000/')
@@ -12,9 +13,8 @@ context('login and signup testing', () => {
   })
 
   specify('test', () => {
-    cy.get('input').last().parent().type('/Users/richter/Downloads/playground/imaginext/pages')
-    cy.get('button').focused().click()
-    cy.wait(3000)
+    cy.get('input').last().parent().type(path)
+    cy.get('button').click()
   })
 
 })
