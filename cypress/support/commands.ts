@@ -1,4 +1,9 @@
 /// <reference types="cypress" />
+
+// added this to fix error related to isolatedModules
+export {}
+
+
 // ***********************************************
 // This example commands.ts shows you how to
 // create various custom commands and overwrite
