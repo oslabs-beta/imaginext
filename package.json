@@ -1,6 +1,6 @@
 {
   "name": "imaginext",
-  "version": "0.0.3",
+  "version": "0.0.4-alpha.0",
   "private": false,
   "bin": {
     "floppy": "./floppy.js"
@@ -9,7 +9,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "clean": "rm -rf dist",
+    "buildnpm": "tsc && cp package.json README.md next.config.js next-env.d.ts ./dist && cp -R ./styles ./dist/styles && cp ./public/imaginext.png ./dist/public"
   },
   "dependencies": {
     "@types/node": "18.11.9",
