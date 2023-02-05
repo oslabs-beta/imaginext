@@ -18,3 +18,6 @@ context('login and signup testing', () => {
   })
 
 })
+
+// added this to fix error related to isolatedModules
+export {}

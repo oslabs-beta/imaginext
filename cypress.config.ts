@@ -1,5 +1,5 @@
 import { defineConfig } from "cypress";
-const path = require('path')
+import path from 'path';
 
 export default defineConfig({
   viewportWidth: 1024,
