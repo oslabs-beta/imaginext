@@ -140,6 +140,42 @@ export default function Home() {
     .catch((err) => console.log(err))
   }
   
+  // on intial load, fetch tree for default project
+  // TODO: this is basically a copy/paste of the onSubmit right now. refactor onSubmit/this function
+  const fetchProjectOnLoad = () => {
+    console.log("Initial fetch");
+    //post 
+    fetch('http://localhost:3000/api/data', {
+      method: 'POST',
+      body: JSON.stringify({path: 'undefined'}),
+      headers:{'Content-Type': 'application/json'}
+    })
+    .then((response) => response.json())
+    .then((json) => {
+      console.log(json)
+      separateData(json);
+      setTreeData(
+        <Tree
+          data={json}
+          collapsible={true}
+          pathFunc="diagonal"
+          translate={treeTranslate}
+          orientation="vertical"
+          rootNodeClassName="node__root"
+          branchNodeClassName="node__branch"
+          leafNodeClassName="node__leaf"
+          pathClassFunc={getDynamicPathClass}
+          onNodeMouseOver={(e)=>{console.log("Moused Over: ", e)}}
+          // onUpdate={(e)=>{console.log("On Update: ", e)}}
+        />
+      );
+    })
+    .then(() => {delete attributes["Pages"]})
+    .catch((err) => console.log(err))
+  }
+
+  useEffect(fetchProjectOnLoad, [])
+
   return (
     <>
       <div ref={treeContainerRef} style={{ height: '100vh', overflow: "hidden" }}>
