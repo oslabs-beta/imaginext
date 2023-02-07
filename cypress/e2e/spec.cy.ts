@@ -42,7 +42,7 @@ context('Test for Data Rendering Methods', () => {
   })
 })
 
-context.only('Test for Fetch Endpoints', () => { 
+context('Test for Fetch Endpoints', () => { 
   beforeEach(() => {
     cy.visit('http://localhost:3000/')
     cy.get('input').last().parent().type(testingPath)
@@ -55,5 +55,17 @@ context.only('Test for Fetch Endpoints', () => {
   })
 })
 
+context('Test for Props', () => { 
+  beforeEach(() => {
+    cy.visit('http://localhost:3000/')
+    cy.get('input').last().parent().type(testingPath)
+    cy.get('button').click()
+  })
+
+  specify('Props Shown Correctly)', () => {
+    cy.contains('about.js').click()
+    cy.get('div').contains('Props').contains('{"message":"Welcome to the About Page","testProp":"nothing to see here"}')
+  })
+})
 // added this to fix error related to isolatedModules
 export {}
