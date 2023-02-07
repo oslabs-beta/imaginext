@@ -20,7 +20,7 @@ context('Testing loads correctly', () => {
   })
 })
 
-context.only('Test for Data Rendering Methods', () => { 
+context('Test for Data Rendering Methods', () => { 
   beforeEach(() => {
     cy.visit('http://localhost:3000/')
     cy.get('input').last().parent().type(testingPath)
@@ -39,6 +39,19 @@ context.only('Test for Data Rendering Methods', () => {
   specify('SSR - getServerSideProps', () => {
     cy.contains('about.js').click()
     cy.get('div').contains('Data Render Method').contains('SSR')
+  })
+})
+
+context.only('Test for Fetch Endpoints', () => { 
+  beforeEach(() => {
+    cy.visit('http://localhost:3000/')
+    cy.get('input').last().parent().type(testingPath)
+    cy.get('button').click()
+  })
+
+  specify('Endpoint Shown Correctly)', () => {
+    cy.contains('testclientside.js').click()
+    cy.get('div').contains('Fetch Endpoint').contains('/api/profile-data')
   })
 })
 
