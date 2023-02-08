@@ -111,7 +111,7 @@ export default function Home() {
     const path: string = inputPath.current !== null ? inputPath.current.value : "inputPath.current is null"
     e.preventDefault();
     //post 
-    fetch('http://localhost:3000/api/data', {
+    fetch('./api/data', {
       method: 'POST',
       body: JSON.stringify({path: path}),
       headers:{'Content-Type': 'application/json'}
@@ -145,7 +145,7 @@ export default function Home() {
   const fetchProjectOnLoad = () => {
     console.log("Initial fetch");
     //post 
-    fetch('http://localhost:3000/api/data', {
+    fetch('./api/data', {
       method: 'POST',
       body: JSON.stringify({path: 'undefined'}),
       headers:{'Content-Type': 'application/json'}
