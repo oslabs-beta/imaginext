@@ -27,6 +27,7 @@ context('Test for Data Rendering Methods', () => {
     cy.get('button').click()
   })
   specify('SSG - default (no getStaticProps or getServerSideProps)', () => {
+    cy.contains('first-post.js').scrollIntoView()
     cy.contains('first-post.js').click()
     cy.get('div').contains('Data Render Method').contains('SSG')
   })
@@ -39,6 +40,11 @@ context('Test for Data Rendering Methods', () => {
   specify('SSR - getServerSideProps', () => {
     cy.contains('about.js').click()
     cy.get('div').contains('Data Render Method').contains('SSR')
+  })
+
+  specify('ISR - uses revalidate in getStaticProps', () => {
+    cy.contains('copyindex.js').click()
+    cy.get('div').contains('Data Render Method').contains('ISR')
   })
 })
 
