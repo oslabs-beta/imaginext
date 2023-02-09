@@ -1,11 +1,13 @@
-# imaginext
+[![Logo](public/logo.png)](Logo)
+# 
+
 This is a Next.js visualization tool that helps developers understand the structure of their Next.js app by displaying its file and folder hierarchy. The tool uses d3.js to create a tree-like structure that represents the app's file and folder organization, making it easy to navigate and understand the app's architecture.
 
 ## Features
-Display the folder structure of a Next.js app in a tree-like format
-Show the file names and their extensions
-Ability to expand and collapse folders to view their contents
-Easy navigation through the folder structure using mouse click events
+* Display the folder structure of a Next.js app in a tree-like format
+* Show the file names and their extensions
+* Ability to expand and collapse folders to view their contents
+* Easy navigation through the folder structure using mouse click events
 
 ## Usage
 To use the visualization tool, simply clone this repository to your local machine and run the following command in your terminal:
