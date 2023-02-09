@@ -1,6 +1,10 @@
 {
   "name": "imaginext",
-  "version": "0.0.4-beta.1",
+  "version": "0.0.4-beta.2",
+  "description": "Next.js visualizer tool to display file structure",
+  "repository": "oslabs-beta/imaginext",
+  "license": "MIT",
+  "homepage": "https://github.com/oslabs-beta/imaginext",
   "private": false,
   "bin": {
     "imaginext": "./cli.js"
