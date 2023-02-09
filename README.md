@@ -1,34 +1,25 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# imaginext
+This is a Next.js visualization tool that helps developers understand the structure of their Next.js app by displaying its file and folder hierarchy. The tool uses d3.js to create a tree-like structure that represents the app's file and folder organization, making it easy to navigate and understand the app's architecture.
 
-## Getting Started
+## Features
+Display the folder structure of a Next.js app in a tree-like format
+Show the file names and their extensions
+Ability to expand and collapse folders to view their contents
+Easy navigation through the folder structure using mouse click events
 
-First, run the development server:
+## Usage
+To use the visualization tool, simply clone this repository to your local machine and run the following command in your terminal:
 
 ```bash
-npm run dev
-# or
-yarn dev
+npm i imaginext
+npx imaginext
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+This will start a local development server and you can access the visualization tool by visiting [http://localhost:3333](http://localhost:3333) in your browser. The tool will then extract the file and folder structure of your app and display it in the visualization.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+## Limitations
+The tool is currently limited to displaying the file and folder structure of Next.js apps. Future updates may include the ability to display the structure of other types of web applications.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Contributing
+This visualization tool is open source and contributions are welcome! If you would like to contribute, please create a pull request with your changes and include a brief description of the changes made.
