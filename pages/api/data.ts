@@ -9,7 +9,6 @@ import runParser from '../../lib/parser';
 // process.cwd -> goes to the root of this project
 // TODO: currently this only works assuming pages directory is not nested. need to refactor to account for nested directories
 const currentProjectPath = path.resolve(process.cwd() + '/../../pages');
-// const otherPath = '/Users/richter/Downloads/playground/my-app/pages'; // put in some other path to check
 
 export default async function handler(
   req: NextApiRequest,
@@ -41,29 +40,18 @@ export default async function handler(
           obj.children = traverseDir(fullPath);
         } else {
           // run parser to get node attributes
-          console.log('data.ts invoking runParser on path: ', fullPath)
           const data = runParser(fullPath);
-          // console.log('runParser data: ', data)
           obj.attributes.dataRenderMethod = data.dataRenderMethod;
           obj.attributes.fetchURL = data.fetchURL;
           obj.attributes.props = data.props;
-          // console.log('obj.attributes.props: ', obj.attributes.props)
         }
         arr.push(obj)
       } 
 
     });
-    // console.log('parsed node attributes being sent to frontend',arr)
     return arr
   }
 
-  // function findPagesDir(dir:string) {
-  //   fs.access(dir, function(error) {
-  //     if (error) {
-  //       console.log('pages directory ')
-  //     }
-  //   })
-  // }
 
   if (req.method === 'POST') {
     let path;
