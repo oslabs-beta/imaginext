@@ -2,7 +2,6 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import SearchBar from '../components/searchBar'
-// import styles from '../styles/Home.module.css'
 import Tree from 'react-d3-tree'
 import { useState, useRef, useEffect } from 'react'
 import { node, attribute, attributes } from '../public/types'
@@ -34,7 +33,6 @@ export default function Home() {
   });
 
   useEffect(() => {
-    console.log("Setting dimensions...");
     if (treeContainerRef.current && shouldRecenterTreeRef.current) {
       shouldRecenterTreeRef.current = false;
       const dimensions = treeContainerRef.current.getBoundingClientRect();
@@ -47,12 +45,10 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    console.log("Adding event listeners...");
     const leafNodeArr: HTMLCollectionOf<Element> = document.getElementsByClassName("rd3t-leaf-node");
     const nodeObj: HTMLCollectionOf<Element> = document.getElementsByClassName("rd3t-node");
     const arrayCallback = (v: Element): void => {
       v.addEventListener("mouseover", (e:Event) => {
-        // let newObj: attribute;
         let name = "";
         const target: Element = e.target as Element;
         
@@ -66,7 +62,6 @@ export default function Home() {
           }
         }
 
-        // newObj = {...attributes[name]};
         const newObj: attribute = {...attributes[name]};
         setCurrentAttribute(newObj);
       });
@@ -77,7 +72,6 @@ export default function Home() {
   });
 
   useEffect(() => {
-    console.log("Adding IDs to attributes...");
     const leafNodeArr: HTMLCollectionOf<Element> = document.getElementsByClassName("rd3t-leaf-node");
     const nodeArr: Array<Element> = Array.from(leafNodeArr).concat(Array.from(document.getElementsByClassName("rd3t-node")));
     
@@ -110,7 +104,7 @@ export default function Home() {
     setTreeData(<div className="initial-message">Loading...</div>);
     const path: string = inputPath.current !== null ? inputPath.current.value : "inputPath.current is null"
     e.preventDefault();
-    //post 
+
     fetch('./api/data', {
       method: 'POST',
       body: JSON.stringify({path: path}),
@@ -118,7 +112,6 @@ export default function Home() {
     })
     .then((response) => response.json())
     .then((json) => {
-      console.log(json)
       separateData(json);
       setTreeData(
         <Tree
@@ -132,7 +125,6 @@ export default function Home() {
           leafNodeClassName="node__leaf"
           pathClassFunc={getDynamicPathClass}
           onNodeMouseOver={(e)=>{console.log("Moused Over: ", e)}}
-          // onUpdate={(e)=>{console.log("On Update: ", e)}}
         />
       );
     })
@@ -144,7 +136,7 @@ export default function Home() {
   // TODO: this is basically a copy/paste of the onSubmit right now. refactor onSubmit/this function
   const fetchProjectOnLoad = () => {
     console.log("Initial fetch");
-    //post 
+
     fetch('./api/data', {
       method: 'POST',
       body: JSON.stringify({path: 'undefined'}),
@@ -152,7 +144,6 @@ export default function Home() {
     })
     .then((response) => response.json())
     .then((json) => {
-      console.log(json)
       separateData(json);
       setTreeData(
         <Tree
@@ -166,7 +157,6 @@ export default function Home() {
           leafNodeClassName="node__leaf"
           pathClassFunc={getDynamicPathClass}
           onNodeMouseOver={(e)=>{console.log("Moused Over: ", e)}}
-          // onUpdate={(e)=>{console.log("On Update: ", e)}}
         />
       );
     })

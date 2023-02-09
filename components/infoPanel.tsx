@@ -5,7 +5,6 @@ export default function InfoPanel (props: {att:attribute}) {
   const dataRenderMethod: string = props.att.dataRenderMethod;
   const endpoint: string = props.att.fetchURL !== undefined ? props.att.fetchURL : '';
   const nodePropsObject = JSON.stringify(props.att.props);
-  console.log('nodePropsObject: ', nodePropsObject)
 
 
   const clearPath = (path: string):string => {
