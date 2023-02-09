@@ -180,7 +180,7 @@ export default function Home() {
     <>
       <div ref={treeContainerRef} style={{ height: '100vh', overflow: "hidden" }}>
         <div className='has-text-centered m-6'>
-          <Image src='/imaginext.png' alt='logo' width={"350"} height={"350"} />
+          <Image src='/logo.png' alt='logo' width={"100"} height={"100"} />
           <div className = 'underline'></div>
         </div>
         <div className = 'inputArea'>
