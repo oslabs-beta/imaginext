@@ -1,22 +1,21 @@
-
-import Head from 'next/head'
 import Image from 'next/image'
 import SearchBar from '../components/searchBar'
 import Tree from 'react-d3-tree'
 import { useState, useRef, useEffect } from 'react'
 import { node, attribute, attributes } from '../public/types'
 import InfoPanel from '../components/infoPanel'
-import { log } from 'console'
-import { TreeLinkDatum } from 'react-d3-tree/lib/types/common'
+import { TreeLinkDatum } from 'react-d3-tree/lib/types/types/common'
 
+// attributes for pages node
 const attributes: attributes = {
   pages: {
-    id: "test",
-    path: "test",
-    dataRenderMethod: 'test',
+    id: "",
+    path: "pages",
+    dataRenderMethod: "",
   }
 };
 
+// initialize the tree container and attribute
 export default function Home() {
   const inputPath = useRef<null | HTMLInputElement>(null);
 
@@ -32,6 +31,8 @@ export default function Home() {
     props: {},
   });
 
+  // center the tree (currently only works when you submit the path)
+  // TODO: center tree when first loading page
   useEffect(() => {
     if (treeContainerRef.current && shouldRecenterTreeRef.current) {
       shouldRecenterTreeRef.current = false;
@@ -44,6 +45,7 @@ export default function Home() {
     }
   }, []);
 
+  // setting the mouseover events for each node
   useEffect(() => {
     const leafNodeArr: HTMLCollectionOf<Element> = document.getElementsByClassName("rd3t-leaf-node");
     const nodeObj: HTMLCollectionOf<Element> = document.getElementsByClassName("rd3t-node");
@@ -71,6 +73,7 @@ export default function Home() {
     Array.from(nodeObj).forEach(arrayCallback);
   });
 
+  // maps data to the attributes
   useEffect(() => {
     const leafNodeArr: HTMLCollectionOf<Element> = document.getElementsByClassName("rd3t-leaf-node");
     const nodeArr: Array<Element> = Array.from(leafNodeArr).concat(Array.from(document.getElementsByClassName("rd3t-node")));
@@ -81,6 +84,7 @@ export default function Home() {
     });
   });
 
+  // d3 related -> adds classname to the nodes
   const getDynamicPathClass = (treeLink : TreeLinkDatum) => {
     if (!treeLink.target.children) {
       // Target node has no children -> this link leads to a leaf node.
@@ -91,6 +95,7 @@ export default function Home() {
     return 'link__to-branch';
   };
 
+  // seperates data for the tree
   const separateData = (obj: node) => {
     obj.attributes ? attributes[obj.name] = obj.attributes : {}
     obj.attributes = undefined;
@@ -100,6 +105,7 @@ export default function Home() {
     obj.children.forEach((v) => {separateData(v)});
   }
 
+  // generate a tree from the input path
   const onSubmit = (e: React.FormEvent) => {
     setTreeData(<div className="initial-message">Loading...</div>);
     const path: string = inputPath.current !== null ? inputPath.current.value : "inputPath.current is null"
@@ -166,6 +172,8 @@ export default function Home() {
 
   useEffect(fetchProjectOnLoad, [])
 
+
+  // front end - react
   return (
     <>
       <div ref={treeContainerRef} style={{ height: '100vh', overflow: "hidden" }}>

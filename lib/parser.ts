@@ -142,7 +142,6 @@ export function checkImportSwr(tree: object):boolean {
       }
     }
   })
-  console.log('checkImportSwr result:', result)
   return result;
 }
 

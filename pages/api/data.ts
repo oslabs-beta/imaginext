@@ -8,7 +8,7 @@ import runParser from '../../lib/parser';
 // todo: add support to input a link or drag and drop.
 // process.cwd -> goes to the root of this project
 // TODO: currently this only works assuming pages directory is not nested. need to refactor to account for nested directories
-const currentProjectPath = path.resolve(process.cwd() + '/../../pages');
+const currentProjectPath = path.resolve(process.cwd() + '/pages');
 
 export default async function handler(
   req: NextApiRequest,
@@ -17,6 +17,7 @@ export default async function handler(
     
   console.log('currentProjectPath: ', currentProjectPath)
 
+  // traverse directory
   function traverseDir(dir:string) {
     const validFileType:Array<string> = ['.ts', '.tsx', '.js', 'jsx'];
     const arr:object[] = [];
@@ -58,6 +59,7 @@ export default async function handler(
     if (req.body.path === 'undefined') {
       path = currentProjectPath;
     } else {
+      // TODO: Windows uses other slash. Possibly refactor to add windows support
       path = req.body.path.replace(/\\/g, '/');
     }
     const lastPathItem = path.substring(path.lastIndexOf('/') + 1);
