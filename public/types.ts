@@ -9,7 +9,7 @@ export type attribute = {
   path: string;
   dataRenderMethod: string;
   fetchURL?: string;
-  props?: string;
+  props?: Record<string, unknown>;
 }
 
 export type attributes = {

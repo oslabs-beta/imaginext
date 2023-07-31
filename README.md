@@ -1,34 +1,44 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+![Logo](./public/logo.png)
+# 
 
-## Getting Started
+This is a Next.js visualization tool that helps developers understand the structure of their Next.js app by displaying its file and folder hierarchy. The tool uses d3.js to create a tree-like structure that represents the app's file and folder organization, making it easy to navigate and understand the app's architecture.
 
-First, run the development server:
+## Features
+
+* Display the folder structure of a Next.js app in a tree-like format
+* Show the file names and their extensions
+* Display each page's data rendering method (SSR, SSG, etc.)
+* Ability to expand and collapse folders to view their contents
+* Easy navigation through the folder structure using mouse click events
+
+## Installation
+
+Install the npm package to your local Next.js project with this command:
+```
+npm i imaginext --save-dev
+```
+npm page: https://www.npmjs.com/package/imaginext
+
+## Usage
+
+To use the visualization tool, navigate to the project root directory in your terminal and run the following command:
 
 ```bash
-npm run dev
-# or
-yarn dev
+npx imaginext
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+This will start a local development server, and you can access the visualization tool by visiting [http://localhost:3333](http://localhost:3333) in your browser. The tool will then automatically extract the file and folder structure of your app and display it in the visualization.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+Use the hotkeys **Ctrl+C** to stop the local server.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+## Viewing other projects
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+Once the localhost:3333 page is running, you can also submit another Next.js project path into the form to visualize another project. Of course you may also install the npm package into any other project as well.
 
-## Learn More
+## Limitations
 
-To learn more about Next.js, take a look at the following resources:
+The tool is currently limited to displaying the file and folder structure of Next.js apps that use the Pages directory. Future updates may add support for Next.js apps using the App directory, as well as other types of frameworks like React.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Contributing
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+This visualization tool is open source and contributions are welcome! If you would like to contribute, please create a pull request with your changes and include a brief description of the changes made.

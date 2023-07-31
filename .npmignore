@@ -8,6 +8,8 @@ package-lock.json
 
 # testing
 /coverage
+# this is the one difference from .gitignore
+/test
 
 # next.js
 /.next/
@@ -37,4 +39,3 @@ yarn-error.log*
 next-env.d.ts
 
 # build files for npm package
-dist
