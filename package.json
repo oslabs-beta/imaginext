@@ -15,6 +15,7 @@
     "start": "next start",
     "lint": "next lint",
     "clean": "rm -rf dist",
+    "test": "jest",
     "buildnpm": "tsc -p tsconfig-npm.json && cp package.json README.md LICENSE cli.js next.config.js next-env.d.ts ./dist && cp -R ./styles ./dist/styles && cp -R ./public/ ./dist/public"
   },
   "dependencies": {
